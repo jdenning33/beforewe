@@ -1,5 +1,5 @@
 export const Iq7LoadingView = () => (
-  <div>
-    <h1>Loading...</h1>
-  </div>
+    <div>
+        <h1>Loading...</h1>
+    </div>
 );

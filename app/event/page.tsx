@@ -1,3 +1,3 @@
 export default function Page() {
-  return <div>IDK</div>;
+    return <div>IDK</div>;
 }

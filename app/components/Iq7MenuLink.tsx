@@ -1,34 +1,34 @@
 export function Iq7MenuLink({
-  children,
-  isActive,
-  title,
-  onClick,
-  className,
+    children,
+    isActive,
+    title,
+    onClick,
+    className,
 }: {
-  children: React.ReactNode;
-  isActive?: boolean;
-  title?: string;
-  onClick?: (e: React.MouseEvent) => void;
-  className?: string;
+    children: React.ReactNode;
+    isActive?: boolean;
+    title?: string;
+    onClick?: (e: React.MouseEvent) => void;
+    className?: string;
 }) {
-  return (
-    <li
-      title={title}
-      onClick={(e) => {
-        onClick && onClick(e);
-      }}
-      className={"truncate " + className}
-    >
-      <div
-        className={
-          "px-2 py-1 rounded w-full text-left cursor-pointer " +
-          (isActive
-            ? "bg-primary text-primary-content hover:bg-primary-focus "
-            : "hover:bg-base-300 ")
-        }
-      >
-        {children}
-      </div>
-    </li>
-  );
+    return (
+        <li
+            title={title}
+            onClick={(e) => {
+                onClick && onClick(e);
+            }}
+            className={'truncate ' + className}
+        >
+            <div
+                className={
+                    'px-2 py-1 rounded w-full text-left cursor-pointer ' +
+                    (isActive
+                        ? 'bg-primary text-primary-content hover:bg-primary-focus '
+                        : 'hover:bg-base-300 ')
+                }
+            >
+                {children}
+            </div>
+        </li>
+    );
 }
