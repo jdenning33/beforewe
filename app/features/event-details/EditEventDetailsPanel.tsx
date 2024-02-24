@@ -1,66 +1,29 @@
-import { useEvent } from './hooks/useEvent';
-import moment from 'moment';
 import { PersonIcon } from '@/app/components/icons/PersonIcon';
 
-import { useForm, SubmitHandler } from 'react-hook-form';
 import { Iq7Input } from '@/app/components/Iq7Input';
 import { IEvent, IUnsavedEvent } from './hooks/IEvent';
 import { useEvents } from './hooks/useEvents';
 import { useAuthUser } from '../user/hooks/useAuthUser';
 import { useRouter } from 'next/navigation';
+import { useEditEventForm } from './hooks/useEditEventForm';
+import Link from 'next/link';
 
 export function EditEventDetailsPanel({
     className,
-    afterSave,
+    event,
 }: {
-    afterSave: () => void;
     className?: string;
+    event: IEvent | IUnsavedEvent;
 }) {
     const router = useRouter();
     const { isSignedIn } = useAuthUser();
-    const { event } = useEvent();
-    const { saveEvent, deleteEvent } = useEvents();
-
-    const {
-        handleSubmit,
-        control,
-        watch,
-        setValue,
-        formState: { errors },
-    } = useForm<IEvent>({
-        defaultValues: {
-            ...event,
-            primary_date: event.primary_date?.format('YYYY-MM-DD'),
-        },
-        mode: 'onChange',
-    });
-
-    const onSubmit: SubmitHandler<IEvent> = async (data) => {
-        let newEvent: IUnsavedEvent = {
-            ...event,
-            fiance_1_name: data.fiance_1_name,
-            fiance_2_name: data.fiance_2_name,
-            primary_date: data.primary_date ? moment(data.primary_date) : null,
-            name: event.name
-                ? event.name
-                : data.fiance_1_name + ' & ' + data.fiance_2_name,
-            alias: data.alias,
-            is_public: isSignedIn ? false : true,
-        };
-        try {
-            await saveEvent(newEvent);
-            afterSave();
-            router.push('/' + newEvent.alias);
-        } catch (e: any) {
-            alert('Error saving event: ' + e.message);
-            console.error('asdf', e);
-        }
-    };
+    const { deleteEvent } = useEvents();
+    const { handleSubmit, control, aliasValue } = useEditEventForm(event);
 
     return (
         /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
         <form
-            onSubmit={handleSubmit(onSubmit)}
+            onSubmit={handleSubmit}
             className='flex flex-col gap-2 items-center justify-between h-full'
         >
             <div className='flex gap-2 items-end'>
@@ -72,7 +35,7 @@ export function EditEventDetailsPanel({
                         placeholder='Fiance Name'
                         name='fiance_1_name'
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'This field is required.' }}
                     />
                 </div>
                 <div className='text-xl font-medium'>&</div>
@@ -84,7 +47,7 @@ export function EditEventDetailsPanel({
                         placeholder='Fiance Name'
                         name='fiance_2_name'
                         control={control}
-                        rules={{ required: true }}
+                        rules={{ required: 'This field is required.' }}
                     />
                 </div>
             </div>
@@ -110,20 +73,20 @@ export function EditEventDetailsPanel({
                             Save Event
                         </button>
                         <div className='flex-1 flex justify-end'>
+                            <Link href={`/${event.alias}`}>
+                                <button className='btn btn-sm btn-primary btn-ghost w-fit'>
+                                    Cancel
+                                </button>
+                            </Link>
+
                             <button
-                                className='btn btn-sm btn-primary btn-ghost w-fit'
-                                onClick={async (e) => afterSave()}
-                            >
-                                Cancel
-                            </button>
-                            <button
-                                className='btn btn-sm btn-primary btn-ghost w-fit hidden'
+                                className='btn btn-sm btn-primary btn-ghost w-fit xhidden'
                                 onClick={async (e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
                                     try {
                                         await deleteEvent(event as IEvent);
-                                        afterSave();
+                                        router.push('/');
                                     } catch (e: any) {
                                         alert(
                                             'Error deleting event: ' + e.message
@@ -137,19 +100,20 @@ export function EditEventDetailsPanel({
                     </>
                 ) : (
                     <>
-                        <div
-                            className='flex-1 flex items-center gap-2 justify-center'
-                            onFocus={() => {
-                                console.log('focused');
-                                setValue('alias', 'BAM');
-                            }}
-                        >
+                        <div className='flex-1 flex items-center gap-2 justify-center'>
                             beforewe.co/
                             <Iq7Input
-                                placeholder=''
+                                placeholder={aliasValue || 'your-event-url'}
                                 name='alias'
                                 control={control}
-                                rules={{ required: true }}
+                                rules={{
+                                    required: false,
+                                    pattern: {
+                                        value: /^[a-zA-Z0-9-]*$/,
+                                        message:
+                                            'You may only use letters, numbers and hyphens (-).',
+                                    },
+                                }}
                             />
                             <button
                                 className='btn btn-sm btn-primary w-fit'

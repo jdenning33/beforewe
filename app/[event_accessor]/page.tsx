@@ -5,7 +5,7 @@ import { BudgetOverviewPanel } from '@/app/features/budget/BudgetOverviewPanel';
 import { EventDetailsPanel } from '@/app/features/event-details/EventDetailsPanel';
 import { useEvent } from '@/app/features/event-details/hooks/useEvent';
 
-export default function EventHomePage() {
+export default function EventPage() {
     return (
         <main className='p-8'>
             <div className='grid grid-flow-dense justify-center grid-cols-[repeat(auto-fit,minmax(15rem,auto))] gap-6'>

@@ -5,23 +5,23 @@ import moment from 'moment';
 import { useEffect, useState } from 'react';
 import { EditEventDetailsPanel } from './EditEventDetailsPanel';
 import { useEvents } from './hooks/useEvents';
+import { useParams, useSearchParams } from 'next/navigation';
+import Link from 'next/link';
 
 export function EventDetailsPanel({ className }: { className?: string }) {
     const { event } = useEvent();
 
-    const [isEditing, setIsEditing] = useState(event.id ? false : true);
-    useEffect(() => {
-        console.log('event.id', event.id);
-        setIsEditing(event.id ? false : true);
-    }, [event.id]);
+    const searchParams = useSearchParams();
+    const edit = searchParams.has('edit');
+    console.log('edit', edit);
 
-    if (isEditing) {
-        return (
-            <EditEventDetailsPanel
-                afterSave={() => setIsEditing(false)}
-                className={className}
-            />
-        );
+    // const [isEditing, setIsEditing] = useState(event.id ? false : true);
+    // useEffect(() => {
+    //     setIsEditing(event.id ? false : true);
+    // }, [event.id]);
+
+    if (edit || !event.id) {
+        return <EditEventDetailsPanel event={event} className={className} />;
     }
 
     return (
@@ -29,7 +29,9 @@ export function EventDetailsPanel({ className }: { className?: string }) {
             <CoupleDetails />
             <Countdown />
             <EventAlias />
-            <button onClick={(_) => setIsEditing(true)}>Edit</button>
+            <Link href={`/${event.alias}?edit=true`}>
+                <button>Edit</button>
+            </Link>
         </div>
     );
 }

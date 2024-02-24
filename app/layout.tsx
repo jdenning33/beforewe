@@ -52,9 +52,7 @@ export default function RootLayout({
                     <QueryClientProvider client={queryClient}>
                         <Suspense fallback='Loading...'>
                             <AuthUserContextProvider>
-                                <EventProvider>
-                                    <Content>{children}</Content>
-                                </EventProvider>
+                                <Content>{children}</Content>
                             </AuthUserContextProvider>
                         </Suspense>
                     </QueryClientProvider>

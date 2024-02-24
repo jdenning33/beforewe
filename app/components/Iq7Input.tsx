@@ -16,12 +16,12 @@ export function Iq7Input<T extends FieldValues>({
     placeholder?: string;
     inputClassName?: string;
 } & UseControllerProps<T>) {
-    const { field, fieldState, formState } = useController(props);
+    const { field, fieldState } = useController(props);
 
     if (!field.value) field.value = '' as any;
 
     return (
-        <div className='flex flex-col'>
+        <div className='flex flex-col relative group'>
             {label && <label htmlFor={field.name}>{label}</label>}
             <input
                 type={type}
@@ -31,13 +31,18 @@ export function Iq7Input<T extends FieldValues>({
                     inputClassName
                 }
                 {...field}
-                required={true}
                 placeholder={placeholder}
             />
-            {/* <p>{fieldState.isTouched && "Touched"}</p>
-      <p>{fieldState.isDirty && "Dirty"}</p> */}
-            {/* <p>{fieldState.invalid ? fieldState.invalid : "valid"}</p> */}
-            {fieldState.error && <p>{fieldState.error.message}</p>}
+            {fieldState.error?.message && (
+                <p
+                    className='text-sm font-medium absolute -bottom-2 left-0 max-w-[100%] 
+                overflow-hidden translate-y-[100%] hidden 
+                group-focus-within:block z-[4] 
+                bg-warning text-warning-content p-1 rounded'
+                >
+                    {fieldState.error.message}
+                </p>
+            )}
         </div>
     );
 }

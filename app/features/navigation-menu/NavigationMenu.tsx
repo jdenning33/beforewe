@@ -3,7 +3,7 @@ import { MenuBarsIcon } from '../../components/icons/MenuBarsIcon';
 import { Iq7Dropdown } from '@/app/components/Iq7Dropdown';
 import { Iq7Tabs } from '../../components/Iq7Tabs';
 import { Iq7IconButtonDiv } from '@/app/components/Iq7IconButtonDiv';
-import { useEvent } from '../event-details/hooks/useEvent';
+import { useEvent, useUrlMatchingEvent } from '../event-details/hooks/useEvent';
 import { Iq7MenuLink } from '../../components/Iq7MenuLink';
 import { useAuthUser } from '../user/hooks/useAuthUser';
 import Link from 'next/link';
@@ -64,22 +64,31 @@ function TileSelector() {
 
 function EventsSelector() {
     const { events } = useEvents();
-    const { event: activeEvent } = useEvent();
+    const { matchingEvent } = useUrlMatchingEvent();
     return (
         <ul>
             {events.map((event) => {
                 return (
-                    <Link className='w-full' href={`/${event.alias}`}>
+                    <Link
+                        key={event.id}
+                        className='w-full'
+                        href={`/${event.alias}`}
+                    >
                         <Iq7MenuLink
-                            key={event.id}
                             title={event.name}
-                            isActive={event.id === activeEvent.id}
+                            isActive={event.id === matchingEvent?.id}
                         >
                             {event.name}
                         </Iq7MenuLink>
                     </Link>
                 );
             })}
+            <div className='divider my-2'></div>
+            <div className='w-full flex justify-center pb-2'>
+                <Link className='btn btn-sm btn-secondary w-full' href={`/new`}>
+                    New Event
+                </Link>
+            </div>
         </ul>
     );
 }

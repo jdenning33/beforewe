@@ -17,14 +17,15 @@ export function Iq7MenuLink({
             onClick={(e) => {
                 onClick && onClick(e);
             }}
-            className={'truncate ' + className}
+            className={'truncate '}
         >
             <div
                 className={
                     'px-2 py-1 rounded w-full text-left cursor-pointer ' +
                     (isActive
                         ? 'bg-primary text-primary-content hover:bg-primary-focus '
-                        : 'hover:bg-base-300 ')
+                        : 'hover:bg-base-300 ') +
+                    className
                 }
             >
                 {children}
