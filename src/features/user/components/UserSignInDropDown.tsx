@@ -8,7 +8,7 @@ export function UserSignInDropDown() {
             <Iq7Dropdown.Trigger>
                 <Iq7ButtonDiv>Sign in</Iq7ButtonDiv>
             </Iq7Dropdown.Trigger>
-            <Iq7Dropdown.Content align='end'>
+            <Iq7Dropdown.Content className='bg-white border p-4' align='end'>
                 <UserAuthPanel />
             </Iq7Dropdown.Content>
         </Iq7Dropdown>

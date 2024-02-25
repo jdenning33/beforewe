@@ -2,7 +2,12 @@ import { Iq7StandardProps } from './Iq7StandardProps';
 
 export function Iq7Card({ children, className }: Iq7StandardProps) {
     return (
-        <div className={'card bg-neutral text-neutral-content ' + className}>
+        <div
+            className={
+                'card bg-base-200 text-base-content border border-base-300 ' +
+                className
+            }
+        >
             {children}
         </div>
     );
@@ -24,10 +29,15 @@ Iq7Card.Subsection = function Iq7CardSubsection({
     className,
 }: Iq7StandardProps) {
     return (
-        <div
-            className={'border border-neutral-content rounded p-4 ' + className}
-        >
+        <div className={'border border-base-content rounded p-3 ' + className}>
             {children}
         </div>
     );
+};
+
+Iq7Card.SubsectionTitle = function Iq7CardSubsectionTitle({
+    children,
+    className,
+}: Iq7StandardProps) {
+    return <h3 className={'text-sm font-bold ' + className}>{children}</h3>;
 };

@@ -7,6 +7,7 @@ import { Iq7Dropdown } from '@/src/components/Iq7Dropdown';
 import { Iq7IconButtonDiv } from '@/src/components/Iq7IconButtonDiv';
 import { Iq7Tabs } from '@/src/components/Iq7Tabs';
 import { MenuBarsIcon } from '@/src/components/icons/MenuBarsIcon';
+import { Iq7Button, Iq7PrimaryButton } from '@/src/components/Iq7Button';
 
 export function NavigationMenu() {
     let { isSignedIn } = useAuthUser();
@@ -85,9 +86,11 @@ function EventsSelector() {
             })}
             <div className='divider my-2'></div>
             <div className='w-full flex justify-center pb-2'>
-                <Link className='btn btn-sm btn-secondary w-full' href={`/new`}>
-                    New Event
-                </Link>
+                <Iq7PrimaryButton>
+                    <Link className='' href={`/new`}>
+                        New Event
+                    </Link>
+                </Iq7PrimaryButton>
             </div>
         </ul>
     );

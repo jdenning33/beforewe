@@ -2,7 +2,7 @@
 
 import { Iq7Card } from '@/src/components/Iq7Card';
 import { BudgetOverviewPanel } from '@/src/features/budget/BudgetOverviewPanel';
-import { EventDetailsPanel } from '@/src/features/event-details/EventDetailsPanel';
+import { EventDetailsPanel } from '@/src/features/event-details/components/EventDetailsPanel';
 import { useEvent } from '@/src/features/event-details/hooks/useEvent';
 
 export default function EventPage() {

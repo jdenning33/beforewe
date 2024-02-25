@@ -1,5 +1,5 @@
-import { PersonIcon } from '../../components/icons/PersonIcon';
-import { useEvent } from './hooks/useEvent';
+import { PersonIcon } from '../../../components/icons/PersonIcon';
+import { useEvent } from '../hooks/useEvent';
 
 export function CoupleDetails() {
     const { event } = useEvent();

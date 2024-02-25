@@ -18,7 +18,7 @@ export default function UserAuthPanel({
             supabaseClient={supabase}
             view={view}
             appearance={{ theme: ThemeSupa }}
-            theme='dark'
+            theme='light'
             showLinks={false}
             providers={['google', 'facebook']}
             socialLayout='horizontal'

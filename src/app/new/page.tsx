@@ -1,7 +1,7 @@
 'use client';
 
 import { Iq7Card } from '@/src/components/Iq7Card';
-import { EditEventDetailsPanel } from '@/src/features/event-details/EditEventDetailsPanel';
+import { EditEventDetailsPanel } from '@/src/features/event-details/components/EditEventDetailsPanel';
 import { IUnsavedEvent } from '@/src/features/event-details/hooks/IEvent';
 
 let defaultEvent: IUnsavedEvent = {

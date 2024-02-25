@@ -1,11 +1,17 @@
-import { IEvent, IUnsavedEvent } from './hooks/IEvent';
-import { useEvents } from './hooks/useEvents';
-import { useAuthUser } from '../user/hooks/useAuthUser';
+import { IEvent, IUnsavedEvent } from '../hooks/IEvent';
+import { useEvents } from '../hooks/useEvents';
+import { useAuthUser } from '../../user/hooks/useAuthUser';
 import { useRouter } from 'next/navigation';
-import { useEditEventForm } from './hooks/useEditEventForm';
+import { useEditEventForm } from '../hooks/useEditEventForm';
 import Link from 'next/link';
 import { PersonIcon } from '@/src/components/icons/PersonIcon';
 import { Iq7Input } from '@/src/components/Iq7Input';
+import {
+    Iq7Button,
+    Iq7GhostButton,
+    Iq7IconButton,
+    Iq7PrimaryButton,
+} from '@/src/components/Iq7Button';
 
 export function EditEventDetailsPanel({
     className,
@@ -16,8 +22,8 @@ export function EditEventDetailsPanel({
 }) {
     const router = useRouter();
     const { isSignedIn } = useAuthUser();
-    const { deleteEvent } = useEvents();
-    const { handleSubmit, control, aliasValue } = useEditEventForm(event);
+    const { handleSubmit, handleDelete, control, aliasValue } =
+        useEditEventForm(event);
 
     return (
         /* "handleSubmit" will validate your inputs before invoking "onSubmit" */
@@ -64,37 +70,26 @@ export function EditEventDetailsPanel({
             <div className='flex w-full'>
                 {event.id ? (
                     <>
-                        <div className='flex-1'></div>
-                        <button
-                            className='btn btn-sm btn-primary w-fit'
-                            type='submit'
-                        >
-                            Save Event
-                        </button>
-                        <div className='flex-1 flex justify-end'>
-                            <Link href={`/${event.alias}`}>
-                                <button className='btn btn-sm btn-primary btn-ghost w-fit'>
-                                    Cancel
-                                </button>
-                            </Link>
-
-                            <button
-                                className='btn btn-sm btn-primary btn-ghost w-fit xhidden'
-                                onClick={async (e) => {
+                        <div className='flex-1'>
+                            <Iq7GhostButton
+                                className='absolute top-1 right-1 opacity-0 hover:opacity-100'
+                                title='Delete this event. This action cannot be undone.'
+                                onClick={(e) => {
                                     e.preventDefault();
                                     e.stopPropagation();
-                                    try {
-                                        await deleteEvent(event as IEvent);
-                                        router.push('/');
-                                    } catch (e: any) {
-                                        alert(
-                                            'Error deleting event: ' + e.message
-                                        );
-                                    }
+                                    handleDelete();
                                 }}
                             >
-                                Delete Event
-                            </button>
+                                Delete
+                            </Iq7GhostButton>
+                        </div>
+                        <Iq7PrimaryButton type='submit'>
+                            Save Event
+                        </Iq7PrimaryButton>
+                        <div className='flex-1 flex justify-end group relative'>
+                            <Link href={`/${event.alias}`}>
+                                <Iq7GhostButton>Cancel</Iq7GhostButton>
+                            </Link>
                         </div>
                     </>
                 ) : (
@@ -114,12 +109,9 @@ export function EditEventDetailsPanel({
                                     },
                                 }}
                             />
-                            <button
-                                className='btn btn-sm btn-primary w-fit'
-                                type='submit'
-                            >
+                            <Iq7PrimaryButton type='submit'>
                                 {event.id ? 'Save Event' : 'Create Event'}
-                            </button>
+                            </Iq7PrimaryButton>
                         </div>
                     </>
                 )}

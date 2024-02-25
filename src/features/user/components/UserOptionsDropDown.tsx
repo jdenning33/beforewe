@@ -1,6 +1,7 @@
 import { Iq7Dropdown } from '@/src/components/Iq7Dropdown';
 import { useAuthUser } from '../hooks/useAuthUser';
 import Image from 'next/image';
+import { Iq7MenuLink } from '@/src/components/Iq7MenuLink';
 
 export function UserOptionsDropDown() {
     const { signedInUser, signOut } = useAuthUser();
@@ -31,7 +32,9 @@ export function UserOptionsDropDown() {
                 </div>
             </Iq7Dropdown.Trigger>
             <Iq7Dropdown.Content align='end'>
-                <button onClick={signOut}>Sign Out</button>
+                <ul>
+                    <Iq7MenuLink onClick={signOut}>Sign Out</Iq7MenuLink>
+                </ul>
             </Iq7Dropdown.Content>
         </Iq7Dropdown>
     );

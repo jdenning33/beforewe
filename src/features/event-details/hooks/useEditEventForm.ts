@@ -7,7 +7,7 @@ import { useRouter } from 'next/navigation';
 
 export function useEditEventForm(event: IEvent | IUnsavedEvent) {
     const { isSignedIn } = useAuthUser();
-    const { saveEvent } = useEvents();
+    const { saveEvent, deleteEvent, events } = useEvents();
     const router = useRouter();
 
     const { handleSubmit, control, watch } = useForm<IEvent>({
@@ -55,8 +55,26 @@ export function useEditEventForm(event: IEvent | IUnsavedEvent) {
         }
     };
 
+    const handleDelete = async () => {
+        if (confirm('Are you sure you want to delete this event?')) {
+            try {
+                if (event.id) await deleteEvent(event as IEvent);
+                console.log('event deleted');
+                let otherEvents = events.filter((e) => e.id != event.id);
+                if (otherEvents.length > 0)
+                    router.push('/' + otherEvents[0].alias);
+                else router.push('/new');
+                console.log('pushed new');
+            } catch (e: any) {
+                alert('Error deleting event: ' + e.message);
+                console.error('Error', e);
+            }
+        }
+    };
+
     return {
         handleSubmit: handleSubmit(onSubmit),
+        handleDelete,
         control,
         aliasValue,
         onSubmit,

@@ -23,7 +23,7 @@ export function Iq7MenuLink({
                 className={
                     'px-2 py-1 rounded w-full text-left cursor-pointer ' +
                     (isActive
-                        ? 'bg-primary text-primary-content hover:bg-primary-focus '
+                        ? 'bg-base-300 border font-medium hover:bg-base-300 '
                         : 'hover:bg-base-300 ') +
                     className
                 }

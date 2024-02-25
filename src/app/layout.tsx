@@ -33,7 +33,7 @@ export default function RootLayout({
     children: React.ReactNode;
 }>) {
     return (
-        <html lang='en' data-theme='dark' className={inter.className}>
+        <html lang='en' data-theme='cupcake' className={inter.className}>
             <head>
                 <meta charSet='utf-8' />
                 <meta

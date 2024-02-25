@@ -1,4 +1,4 @@
-import { useEvent } from './hooks/useEvent';
+import { useEvent } from '../hooks/useEvent';
 import moment from 'moment';
 import { EditEventDetailsPanel } from './EditEventDetailsPanel';
 import { useSearchParams } from 'next/navigation';
