@@ -2,9 +2,9 @@
 
 import { Iq7PrimaryButtonDiv } from '@/src/components/Iq7Button';
 import { Iq7PageSubTitle, Iq7PageTitle } from '@/src/components/Iq7PageTitle';
-import { FundingSourcesList } from '../../../../features/budget-funds/components/FundingSourcesList';
-import { EditFundingSourceModal } from '../../../../features/budget-funds/components/EditFundingSourceModal';
-import { AvailableFundsByWeekList } from '../../../../features/budget-funds/components/AvailableFundsByWeekList';
+import { AvailableFundsByWeekList } from '@/src/features/budget-funds/components/AvailableFundsByWeekList';
+import { EditFundingSourceModal } from '@/src/features/budget-funds/components/EditFundingSourceModal';
+import { FundingSourcesList } from '@/src/features/budget-funds/components/FundingSourcesList';
 
 export default function BudgetFundsPage() {
     return (

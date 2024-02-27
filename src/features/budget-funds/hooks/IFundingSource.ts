@@ -3,7 +3,7 @@ import { Dayjs } from 'dayjs';
 type IUnsavedFundingSource = {
     name: string;
     amount: number;
-    takeEffectDate?: Dayjs;
+    take_effect_date?: Dayjs;
     use_recurrence?: boolean;
     recurrence?: number;
     recurrence_unit?: 'day' | 'week' | 'month' | 'year';

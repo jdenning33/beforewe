@@ -12,17 +12,17 @@ export function AvailableFundsByWeekList() {
         const weekStart = dayjs().add(i, 'week').startOf('week');
         const weekEnd = dayjs().add(i, 'week').endOf('week');
         const total = fundingSources.reduce((acc, source) => {
-            if (source.takeEffectDate?.isBefore(weekEnd)) {
+            if (source.take_effect_date?.isBefore(weekEnd)) {
                 if (source.use_recurrence) {
                     const elapsedPeriods =
                         source.recurrence_end &&
                         weekEnd.isAfter(source.recurrence_end)
                             ? source.recurrence_end?.diff(
-                                  source.takeEffectDate,
+                                  source.take_effect_date,
                                   source.recurrence_unit
                               )
                             : weekEnd.diff(
-                                  source.takeEffectDate,
+                                  source.take_effect_date,
                                   source.recurrence_unit
                               );
                     acc += Number(source.amount) * elapsedPeriods;
@@ -41,7 +41,7 @@ export function AvailableFundsByWeekList() {
         <Iq7Table>
             <Iq7Table.HeadRow>
                 <th>Week Of</th>
-                <th>Starting Funds</th>
+                <th>Available Funds</th>
                 <th>Payments</th>
             </Iq7Table.HeadRow>
             <Iq7Table.Body>

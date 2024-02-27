@@ -27,6 +27,22 @@ export function Iq7PrimaryButton({
         </button>
     );
 }
+
+export function Iq7AccentButton({
+    children,
+    className,
+    ...props
+}: {
+    children: React.ReactNode;
+    className?: string;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>) {
+    return (
+        <button className={'btn btn-sm btn-accent ' + className} {...props}>
+            {children}
+        </button>
+    );
+}
+
 export function Iq7PrimaryButtonDiv({
     children,
     className,

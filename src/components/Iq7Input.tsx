@@ -10,6 +10,7 @@ export function Iq7Input<T extends FieldValues>({
     placeholder,
     className,
     inputClassName,
+    onInputFocus,
     ...props
 }: {
     label?: string;
@@ -17,22 +18,45 @@ export function Iq7Input<T extends FieldValues>({
     placeholder?: string;
     className?: string;
     inputClassName?: string;
+    onInputFocus?: (
+        event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
+    onInputBlur?: (
+        event: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+    ) => void;
 } & UseControllerProps<T>) {
     const { field, fieldState } = useController(props);
-
+    let newfield = {
+        ...field,
+        onBlur: (
+            e: React.FocusEvent<HTMLInputElement | HTMLTextAreaElement>
+        ) => {
+            if (type === 'date' && !e.target.value) {
+                (e.target as any).type = 'text';
+            }
+            field.onBlur();
+        },
+    };
     if (!field.value) field.value = '' as any;
 
     return (
-        <div className={`flex flex-col relative group ${className}`}>
+        <div
+            className={`flex flex-col relative group ${
+                type === 'date' ? 'w-36 ' : ''
+            } ${className}`}
+        >
             {label && <label htmlFor={field.name}>{label}</label>}
             <input
-                type={type}
+                type={type === 'date' && placeholder ? 'text' : type}
+                onFocus={(e) => {
+                    if (type === 'date' && placeholder) e.target.type = 'date';
+                }}
                 className={
                     'input input-sm ' +
                     (fieldState.invalid ? 'input-warning ' : '') +
                     inputClassName
                 }
-                {...field}
+                {...newfield}
                 placeholder={placeholder}
             />
             {fieldState.error?.message && (

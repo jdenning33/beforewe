@@ -40,7 +40,7 @@ export function FundingSourcesList({ className }: { className?: string }) {
                             <td>{source.name}</td>
                             <td>{source.amount}</td>
                             <td>
-                                {source.takeEffectDate?.format('MMM D, YYYY')}
+                                {source.take_effect_date?.format('MMM D, YYYY')}
                             </td>
                             <td>
                                 {source.use_recurrence &&

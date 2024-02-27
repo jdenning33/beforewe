@@ -8,6 +8,8 @@ import { Iq7IconButtonDiv } from '@/src/components/Iq7IconButtonDiv';
 import { Iq7Tabs } from '@/src/components/Iq7Tabs';
 import { MenuBarsIcon } from '@/src/components/icons/MenuBarsIcon';
 import { Iq7Button, Iq7PrimaryButton } from '@/src/components/Iq7Button';
+import { Suspense } from 'react';
+import { Iq7LoadingView } from '@/src/components/Iq7LoadingView';
 
 export function NavigationMenu() {
     let { isSignedIn } = useAuthUser();
@@ -19,26 +21,32 @@ export function NavigationMenu() {
                 </Iq7IconButtonDiv>
             </Iq7Dropdown.Trigger>
             <Iq7Dropdown.Content align='start'>
-                <Iq7Tabs defaultValue='tools'>
-                    <Iq7Tabs.List>
-                        <Iq7Tabs.Trigger value='tools'>Tools</Iq7Tabs.Trigger>
-                        <Iq7Tabs.Trigger value='tiles'>Tiles</Iq7Tabs.Trigger>
-                        {isSignedIn && (
-                            <Iq7Tabs.Trigger value='event'>
-                                Switch Events
+                <Suspense fallback={<Iq7LoadingView />}>
+                    <Iq7Tabs defaultValue='tools'>
+                        <Iq7Tabs.List>
+                            <Iq7Tabs.Trigger value='tools'>
+                                Tools
                             </Iq7Tabs.Trigger>
-                        )}
-                    </Iq7Tabs.List>
-                    <Iq7Tabs.Content value='tools'>
-                        <ToolSelector />
-                    </Iq7Tabs.Content>
-                    <Iq7Tabs.Content value='tiles'>
-                        <TileSelector />
-                    </Iq7Tabs.Content>
-                    <Iq7Tabs.Content value='event'>
-                        <EventsSelector />
-                    </Iq7Tabs.Content>
-                </Iq7Tabs>
+                            <Iq7Tabs.Trigger value='tiles'>
+                                Tiles
+                            </Iq7Tabs.Trigger>
+                            {isSignedIn && (
+                                <Iq7Tabs.Trigger value='event'>
+                                    Switch Events
+                                </Iq7Tabs.Trigger>
+                            )}
+                        </Iq7Tabs.List>
+                        <Iq7Tabs.Content value='tools'>
+                            <ToolSelector />
+                        </Iq7Tabs.Content>
+                        <Iq7Tabs.Content value='tiles'>
+                            <TileSelector />
+                        </Iq7Tabs.Content>
+                        <Iq7Tabs.Content value='event'>
+                            <EventsSelector />
+                        </Iq7Tabs.Content>
+                    </Iq7Tabs>
+                </Suspense>
             </Iq7Dropdown.Content>
         </Iq7Dropdown>
     );

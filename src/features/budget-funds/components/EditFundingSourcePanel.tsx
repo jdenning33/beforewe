@@ -1,6 +1,7 @@
 'use client';
 import {
     Iq7Button,
+    Iq7GhostButton,
     Iq7OutlineButton,
     Iq7PrimaryButton,
 } from '@/src/components/Iq7Button';
@@ -18,17 +19,18 @@ export function EditFundingSourcePanel({
     fundSource: IFundingSource | null;
     afterSave?: () => void;
 }) {
-    const { saveFundingSource: addFundingSource } = useFundingSources();
+    const { saveFundingSource, deleteFundingSource } = useFundingSources();
     const [useRecurrence, setUseRecurrence] = useState(
         fundSource?.use_recurrence || false
     );
     const { handleSubmit, control, register } = useForm<IFundingSource>({
         defaultValues: {
             ...fundSource,
-            recurrence: fundSource?.recurrence || 1,
+            recurrence: Number(fundSource?.recurrence || 1),
+            amount: Number(fundSource?.amount || 0),
             recurrence_unit: fundSource?.recurrence_unit || 'month',
-            takeEffectDate:
-                fundSource?.takeEffectDate?.format('YYYY-MM-DD') ||
+            take_effect_date:
+                fundSource?.take_effect_date?.format('YYYY-MM-DD') ||
                 dayjs().format('YYYY-MM-DD'),
             recurrence_end: fundSource?.recurrence_end?.format('YYYY-MM-DD'),
         },
@@ -37,11 +39,13 @@ export function EditFundingSourcePanel({
 
     function onSubmit(data: IFundingSource) {
         console.log(data);
-        addFundingSource({
+        saveFundingSource({
             ...data,
             use_recurrence: useRecurrence,
-            takeEffectDate: data.takeEffectDate
-                ? dayjs(data.takeEffectDate)
+            amount: Number(data.amount),
+            recurrence: Number(data.recurrence),
+            take_effect_date: data.take_effect_date
+                ? dayjs(data.take_effect_date)
                 : undefined,
             recurrence_end: data.recurrence_end
                 ? dayjs(data.recurrence_end)
@@ -77,9 +81,8 @@ export function EditFundingSourcePanel({
                 />
                 <Iq7Input
                     label='Available'
-                    placeholder='Now'
                     type='date'
-                    name='takeEffectDate'
+                    name='take_effect_date'
                     control={control}
                     rules={{
                         required: true,
@@ -132,9 +135,8 @@ export function EditFundingSourcePanel({
                             </Iq7Select.Option>
                         </Iq7Select>
                         <Iq7Input
-                            className='w-full'
-                            inputClassName='w-full'
                             label='Until'
+                            placeholder='forever'
                             type='date'
                             name='recurrence_end'
                             control={control}
@@ -143,8 +145,18 @@ export function EditFundingSourcePanel({
                 </>
             )}
             <div className='flex-1 h-full'></div>
-            <div className='flex justify-center mt-4'>
+            <div className='flex mt-4'>
+                <div className='flex-1'></div>
                 <Iq7PrimaryButton>Save</Iq7PrimaryButton>
+                <div className='flex-1'>
+                    {fundSource && (
+                        <Iq7GhostButton
+                            onClick={(_) => deleteFundingSource(fundSource.id)}
+                        >
+                            Delete Funding Source
+                        </Iq7GhostButton>
+                    )}
+                </div>
             </div>
         </form>
     );

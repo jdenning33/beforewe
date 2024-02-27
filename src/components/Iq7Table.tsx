@@ -1,4 +1,3 @@
-'use client';
 export function Iq7Table({
     children,
     className,
