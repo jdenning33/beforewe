@@ -59,12 +59,10 @@ export function useEditEventForm(event: IEvent | IUnsavedEvent) {
         if (confirm('Are you sure you want to delete this event?')) {
             try {
                 if (event.id) await deleteEvent(event as IEvent);
-                console.log('event deleted');
                 let otherEvents = events.filter((e) => e.id != event.id);
                 if (otherEvents.length > 0)
                     router.push('/' + otherEvents[0].alias);
                 else router.push('/new');
-                console.log('pushed new');
             } catch (e: any) {
                 alert('Error deleting event: ' + e.message);
                 console.error('Error', e);

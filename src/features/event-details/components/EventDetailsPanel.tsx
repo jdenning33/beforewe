@@ -3,19 +3,13 @@ import moment from 'moment';
 import { EditEventDetailsPanel } from './EditEventDetailsPanel';
 import { useSearchParams } from 'next/navigation';
 import Link from 'next/link';
-import { CoupleDetails } from './CoupleDetails';
+import { PersonIcon } from '@/src/components/icons/PersonIcon';
 
 export function EventDetailsPanel({ className }: { className?: string }) {
     const { event } = useEvent();
 
     const searchParams = useSearchParams();
     const edit = searchParams.has('edit');
-    console.log('edit', edit);
-
-    // const [isEditing, setIsEditing] = useState(event.id ? false : true);
-    // useEffect(() => {
-    //     setIsEditing(event.id ? false : true);
-    // }, [event.id]);
 
     if (edit || !event.id) {
         return <EditEventDetailsPanel event={event} className={className} />;
@@ -23,7 +17,16 @@ export function EventDetailsPanel({ className }: { className?: string }) {
 
     return (
         <div className={'flex flex-col items-center gap-6 ' + className}>
-            <CoupleDetails />
+            <div className='flex'>
+                <div className='flex flex-col items-center'>
+                    <PersonIcon className='h-32' />
+                    {event.fiance_1_name}
+                </div>
+                <div className='flex flex-col items-center'>
+                    <PersonIcon className='h-32' />
+                    {event.fiance_2_name}
+                </div>
+            </div>
             <Countdown />
             <EventAlias />
             <Link href={`/${event.alias}?edit=true`}>

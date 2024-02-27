@@ -1,16 +1,23 @@
+import Link from 'next/link';
+
 export function Iq7MenuLink({
     children,
     isActive,
     title,
     onClick,
+    href,
     className,
 }: {
     children: React.ReactNode;
     isActive?: boolean;
     title?: string;
+    href?: string;
     onClick?: (e: React.MouseEvent) => void;
     className?: string;
 }) {
+    const baseClassName =
+        'px-2 py-1 rounded w-full text-left cursor-pointer hover:bg-base-300 w-full ';
+    const activeClassName = 'bg-base-300 border font-medium ';
     return (
         <li
             title={title}
@@ -20,15 +27,17 @@ export function Iq7MenuLink({
             className={'truncate '}
         >
             <div
-                className={
-                    'px-2 py-1 rounded w-full text-left cursor-pointer ' +
-                    (isActive
-                        ? 'bg-base-300 border font-medium hover:bg-base-300 '
-                        : 'hover:bg-base-300 ') +
-                    className
-                }
+                className={`${baseClassName} ${
+                    isActive ? activeClassName : ''
+                } ${className}`}
             >
-                {children}
+                {href ? (
+                    <Link className='w-full block' href={href}>
+                        {children}
+                    </Link>
+                ) : (
+                    <>{children}</>
+                )}
             </div>
         </li>
     );

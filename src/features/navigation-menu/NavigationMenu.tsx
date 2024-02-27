@@ -44,10 +44,22 @@ export function NavigationMenu() {
     );
 }
 function ToolSelector() {
+    const { matchingEvent } = useUrlMatchingEvent();
+
     return (
         <ul>
-            <Iq7MenuLink title='Homepage'>Homepage</Iq7MenuLink>
-            <Iq7MenuLink title='Budget'>Budget</Iq7MenuLink>
+            <Iq7MenuLink
+                title='Homepage'
+                href={`/${matchingEvent?.alias || 'landing'}`}
+            >
+                Homepage
+            </Iq7MenuLink>
+            <Iq7MenuLink
+                title='Budget'
+                href={`/${matchingEvent?.alias || 'landing'}/budget`}
+            >
+                Budget
+            </Iq7MenuLink>
             <Iq7MenuLink title='Timeline'>Timeline</Iq7MenuLink>
         </ul>
     );
@@ -70,18 +82,15 @@ function EventsSelector() {
         <ul>
             {events.map((event) => {
                 return (
-                    <Link
+                    <Iq7MenuLink
                         key={event.id}
                         className='w-full'
                         href={`/${event.alias}`}
+                        title={event.name}
+                        isActive={event.id === matchingEvent?.id}
                     >
-                        <Iq7MenuLink
-                            title={event.name}
-                            isActive={event.id === matchingEvent?.id}
-                        >
-                            {event.name}
-                        </Iq7MenuLink>
-                    </Link>
+                        {event.name}
+                    </Iq7MenuLink>
                 );
             })}
             <div className='divider my-2'></div>

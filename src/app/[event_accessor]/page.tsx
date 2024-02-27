@@ -4,6 +4,7 @@ import { Iq7Card } from '@/src/components/Iq7Card';
 import { BudgetOverviewPanel } from '@/src/features/budget/BudgetOverviewPanel';
 import { EventDetailsPanel } from '@/src/features/event-details/components/EventDetailsPanel';
 import { useEvent } from '@/src/features/event-details/hooks/useEvent';
+import Link from 'next/link';
 
 export default function EventPage() {
     return (
@@ -14,7 +15,11 @@ export default function EventPage() {
                         <EventDetailsPanel />
                     </Iq7Card.Body>
                 </Iq7Card>
-                <ToolCard className='col-span-2' title='Budget'>
+                <ToolCard
+                    className='col-span-2'
+                    title='Budget'
+                    toolUrl='Budget'
+                >
                     <BudgetOverviewPanel className='col-span-2' />
                 </ToolCard>
                 <ToolCard title='Primer' />
@@ -35,6 +40,7 @@ function ToolCard({
     children?: React.ReactNode;
     className?: string;
     title: string;
+    toolUrl?: string;
 }) {
     const { event } = useEvent();
 

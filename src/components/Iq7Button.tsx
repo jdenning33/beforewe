@@ -27,6 +27,20 @@ export function Iq7PrimaryButton({
         </button>
     );
 }
+export function Iq7PrimaryButtonDiv({
+    children,
+    className,
+    ...props
+}: {
+    children: React.ReactNode;
+    className?: string;
+} & React.HTMLAttributes<HTMLDivElement>) {
+    return (
+        <div className={'btn btn-sm btn-primary ' + className} {...props}>
+            {children}
+        </div>
+    );
+}
 
 export function Iq7OutlineButton({
     children,

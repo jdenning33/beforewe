@@ -22,9 +22,8 @@ export function useEvents(): UseEventsType {
         try {
             const value = window.localStorage.getItem('localAccessId');
             setLocalAccessId(value);
-            console.log('localAccessId', value);
         } catch (error) {
-            console.log(error);
+            console.error(error);
         }
     }, []);
 
@@ -39,7 +38,6 @@ export function useEvents(): UseEventsType {
     const upsertEventMutation = useMutation({
         mutationFn: (event: IUnsavedEvent) => upsertEvent(supabase, event),
         onSuccess: (data) => {
-            console.log('event saved', data);
             try {
                 window.localStorage.setItem(
                     'localAccessId',
@@ -47,7 +45,7 @@ export function useEvents(): UseEventsType {
                 );
                 setLocalAccessId(data.access_id);
             } catch (error) {
-                console.log(error);
+                console.error(error);
             }
             queryClient.invalidateQueries({
                 queryKey: ['getevents' + localAccessId],
