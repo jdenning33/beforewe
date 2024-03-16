@@ -13,21 +13,23 @@ export function FundingSourcesList({ className }: { className?: string }) {
     return (
         <>
             <Iq7Table className={className}>
-                <Iq7Table.HeadRow>
-                    <th>
-                        Name{' '}
-                        <EditFundingSourceModal
-                            isOpen={!!selectedFundingSource}
-                            onIsOpenChange={(isOpen) => {
-                                if (!isOpen) setSelectedFundingSource(null);
-                            }}
-                            fundingSource={selectedFundingSource}
-                        ></EditFundingSourceModal>
-                    </th>
-                    <th>Amount</th>
-                    <th>Available</th>
-                    <th>Recurring</th>
-                </Iq7Table.HeadRow>
+                <Iq7Table.Head>
+                    <Iq7Table.HeadRow>
+                        <th>
+                            Name{' '}
+                            <EditFundingSourceModal
+                                isOpen={!!selectedFundingSource}
+                                onIsOpenChange={(isOpen) => {
+                                    if (!isOpen) setSelectedFundingSource(null);
+                                }}
+                                fundingSource={selectedFundingSource}
+                            ></EditFundingSourceModal>
+                        </th>
+                        <th>Amount</th>
+                        <th>Available</th>
+                        <th>Recurring</th>
+                    </Iq7Table.HeadRow>
+                </Iq7Table.Head>
                 <Iq7Table.Body>
                     {fundingSources.map((source) => (
                         <Iq7Table.Row

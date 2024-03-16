@@ -7,6 +7,7 @@ export type IGuest = {
     id: number;
     name: string;
     plus_count: number;
+    relationship: string;
     should_invite_score: number;
     group_id: number;
     invitation_id: number;

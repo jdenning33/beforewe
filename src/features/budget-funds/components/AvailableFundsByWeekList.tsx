@@ -39,11 +39,13 @@ export function AvailableFundsByWeekList() {
 
     return (
         <Iq7Table>
-            <Iq7Table.HeadRow>
-                <th>Week Of</th>
-                <th>Available Funds</th>
-                <th>Payments</th>
-            </Iq7Table.HeadRow>
+            <Iq7Table.Head>
+                <Iq7Table.HeadRow>
+                    <th>Week Of</th>
+                    <th>Available Funds</th>
+                    <th>Payments</th>
+                </Iq7Table.HeadRow>
+            </Iq7Table.Head>
             <Iq7Table.Body>
                 {totalFundsByWeek.map((week) => (
                     <Iq7Table.Row key={week.weekStart.toString()}>

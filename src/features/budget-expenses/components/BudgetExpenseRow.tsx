@@ -3,102 +3,49 @@ import { Iq7GhostButton } from '@/src/components/Iq7Button';
 import { Iq7Table } from '@/src/components/Iq7Table';
 import { useExpenses } from '../hooks/useExpenses';
 import { IExpense } from '../hooks/models';
-import { useEffect, useState } from 'react';
-import { useLocalItem } from '@/src/utils/useLocalItem';
 import { colVis } from './BudgetExpensesList';
+import Iq7TextInput from '@/src/components/NonFormInputs/Iq7TextInput';
+import Iq7CurrencyInput from '@/src/components/NonFormInputs/Iq7CurrencyInput';
+import { currencyFormatter } from '@/src/utils/currencyFormatter';
 
 export function BudgetExpenseRow({ expense }: { expense: IExpense }) {
     const { saveExpense, deleteExpense: removeExpense } = useExpenses();
-    const {
-        localItem: localExpense,
-        handleNumericFieldChange,
-        handleTextFieldChange,
-    } = useLocalItem(expense);
 
-    function saveLocalExpense() {
-        saveExpense(localExpense);
-    }
+    let cost = expense.actual || expense.expected;
+    let balance = cost && cost - (expense.paid || 0);
 
-    const inputClassName =
-        'p-1 m-0 group-hover:border rounded w-full bg-base-100 group-hover:bg-white';
-    const numberTdClassName = 'p-0 w-20 sm:w-24 text-center';
-    const numberInputClassName = `${inputClassName} text-center`;
-
+    const numberTdClassName = 'p-1 w-20 sm:w-24 text-center';
     return (
-        <Iq7Table.Row className='hover:bg-base-200 cursor-pointer my-0 py-0 second:pt-2 group'>
+        <Iq7Table.Row className='group'>
             <td
                 className='py-0 pl-1 sm:pl-2 w-[30%] max-w-24 sm:max-w-[unset] whitespace-nowrap truncate'
-                title={localExpense.name}
+                title={expense.name}
             >
-                <input
-                    type='text'
-                    value={localExpense.name}
-                    onChange={handleTextFieldChange('name')}
-                    onBlur={saveLocalExpense}
-                    className={inputClassName}
+                <Iq7TextInput
+                    groupSneaky={true}
+                    value={expense.name}
+                    onValueChange={(v) => saveExpense({ ...expense, name: v })}
                 />
             </td>
             <td className={`${colVis.estimated_low} ${numberTdClassName}`}>
-                <input
-                    type='number'
-                    value={localExpense.expected_low}
-                    placeholder='-'
-                    onChange={handleNumericFieldChange('expected_low')}
-                    onBlur={saveLocalExpense}
-                    className={numberInputClassName}
-                />
+                <CurrencyField expense={expense} fieldName='expected_low' />
             </td>
             <td className={`${colVis.estimated_high} ${numberTdClassName}`}>
-                <input
-                    type='number'
-                    value={localExpense.expected_high}
-                    placeholder='-'
-                    onChange={handleNumericFieldChange('expected_high')}
-                    onBlur={saveLocalExpense}
-                    className={numberInputClassName}
-                />
+                <CurrencyField expense={expense} fieldName='expected_high' />
             </td>
             <td className={`${colVis.estimated} ${numberTdClassName}`}>
-                <input
-                    type='number'
-                    value={localExpense.expected}
-                    placeholder='-'
-                    onChange={handleNumericFieldChange('expected')}
-                    onBlur={saveLocalExpense}
-                    className={numberInputClassName}
-                />
+                <CurrencyField expense={expense} fieldName='expected' />
             </td>
             <td className={`${colVis.actual} ${numberTdClassName}`}>
-                <input
-                    type='number'
-                    value={localExpense.actual}
-                    placeholder='-'
-                    onChange={handleNumericFieldChange('actual')}
-                    onBlur={saveLocalExpense}
-                    className={numberInputClassName}
-                />
+                <CurrencyField expense={expense} fieldName='actual' />
             </td>
-            {/* <td className={`hidden lg:table-cell ${numberTdClassName}`}>
-                {localExpense.actual &&
-                    localExpense.expected &&
-                    localExpense.actual - localExpense.expected}
-            </td> */}
             <td className={`${colVis.paid} ${numberTdClassName}`}>
-                <input
-                    type='number'
-                    value={localExpense.paid}
-                    placeholder='-'
-                    onChange={handleNumericFieldChange('paid')}
-                    onBlur={saveLocalExpense}
-                    className={numberInputClassName}
-                />
+                <CurrencyField expense={expense} fieldName='paid' />
             </td>
             <td
                 className={`${colVis.balance} ${numberTdClassName} font-medium`}
             >
-                {(localExpense.actual &&
-                    localExpense.actual - (localExpense.paid || 0)) ||
-                    '-'}
+                {balance ? currencyFormatter.format(balance) : '-'}
             </td>
             <td className='m-0 p-0 w-0 text-right'>
                 <Iq7GhostButton
@@ -109,5 +56,26 @@ export function BudgetExpenseRow({ expense }: { expense: IExpense }) {
                 </Iq7GhostButton>
             </td>
         </Iq7Table.Row>
+    );
+}
+
+function CurrencyField({
+    expense,
+    fieldName,
+}: {
+    expense: IExpense;
+    fieldName: keyof IExpense;
+}) {
+    const { saveExpense } = useExpenses();
+
+    return (
+        <Iq7CurrencyInput
+            className='text-center'
+            groupSneaky={true}
+            value={expense[fieldName] as any}
+            placeholder='-'
+            decimalScale={0}
+            onValueChange={(v) => saveExpense({ ...expense, [fieldName]: v })}
+        />
     );
 }

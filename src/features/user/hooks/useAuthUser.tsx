@@ -25,7 +25,7 @@ export function AuthUserContextProvider({
 }) {
     const supabase = createClientComponentClient();
     const [session, setSession] = useState<AuthSession | null>(null);
-    const [isAuthInitialized, setIsAuthInitialized] = useState(false);
+    const [isAuthInitialized, setIsAuthInitialized] = useState(true);
 
     useEffect(() => {
         const { data } = supabase.auth.onAuthStateChange((event, session) => {

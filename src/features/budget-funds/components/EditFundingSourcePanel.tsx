@@ -5,7 +5,8 @@ import {
     Iq7OutlineButton,
     Iq7PrimaryButton,
 } from '@/src/components/Iq7Button';
-import { Iq7Input, Iq7Select } from '@/src/components/Iq7Input';
+import { Iq7FormInput } from '@/src/components/Form/Iq7FormInput';
+import { Iq7FormSelect } from '@/src/components/Form/Iq7FormSelect';
 import dayjs from 'dayjs';
 import { useForm } from 'react-hook-form';
 import { IFundingSource } from '@/src/features/budget-funds/hooks/IFundingSource';
@@ -57,7 +58,7 @@ export function EditFundingSourcePanel({
     return (
         <form className='flex flex-col gap-2' onSubmit={handleSubmit(onSubmit)}>
             <div>
-                <Iq7Input
+                <Iq7FormInput
                     label='Name'
                     placeholder='Name'
                     name='name'
@@ -68,7 +69,7 @@ export function EditFundingSourcePanel({
                 />
             </div>
             <div className='flex gap-2'>
-                <Iq7Input
+                <Iq7FormInput
                     inputClassName='w-full'
                     label='Amount'
                     type='number'
@@ -79,7 +80,7 @@ export function EditFundingSourcePanel({
                         required: true,
                     }}
                 />
-                <Iq7Input
+                <Iq7FormInput
                     label='Available'
                     type='date'
                     name='take_effect_date'
@@ -101,7 +102,7 @@ export function EditFundingSourcePanel({
             {useRecurrence && (
                 <>
                     <div className='flex items-end gap-2'>
-                        <Iq7Input
+                        <Iq7FormInput
                             label='Recur every '
                             inputClassName='w-full'
                             type='number'
@@ -113,7 +114,7 @@ export function EditFundingSourcePanel({
                             }}
                             control={control}
                         />
-                        <Iq7Select
+                        <Iq7FormSelect
                             name='recurrence_unit'
                             className='flex-auto shrink-0'
                             inputClassName='w-full'
@@ -122,19 +123,23 @@ export function EditFundingSourcePanel({
                                 required: useRecurrence,
                             }}
                         >
-                            <Iq7Select.Option value=''>None</Iq7Select.Option>
-                            <Iq7Select.Option value='day'>Day</Iq7Select.Option>
-                            <Iq7Select.Option value='week'>
+                            <Iq7FormSelect.Option value=''>
+                                None
+                            </Iq7FormSelect.Option>
+                            <Iq7FormSelect.Option value='day'>
+                                Day
+                            </Iq7FormSelect.Option>
+                            <Iq7FormSelect.Option value='week'>
                                 Week
-                            </Iq7Select.Option>
-                            <Iq7Select.Option value='month'>
+                            </Iq7FormSelect.Option>
+                            <Iq7FormSelect.Option value='month'>
                                 Month
-                            </Iq7Select.Option>
-                            <Iq7Select.Option value='year'>
+                            </Iq7FormSelect.Option>
+                            <Iq7FormSelect.Option value='year'>
                                 Year
-                            </Iq7Select.Option>
-                        </Iq7Select>
-                        <Iq7Input
+                            </Iq7FormSelect.Option>
+                        </Iq7FormSelect>
+                        <Iq7FormInput
                             label='Until'
                             placeholder='forever'
                             type='date'

@@ -5,7 +5,7 @@ import { useRouter } from 'next/navigation';
 import { useEditEventForm } from '../hooks/useEditEventForm';
 import Link from 'next/link';
 import { PersonIcon } from '@/src/components/icons/PersonIcon';
-import { Iq7Input } from '@/src/components/Iq7Input';
+import { Iq7FormInput } from '@/src/components/Form/Iq7FormInput';
 import {
     Iq7Button,
     Iq7GhostButton,
@@ -35,7 +35,7 @@ export function EditEventDetailsPanel({
                 <div className='flex flex-col items-center'>
                     <PersonIcon className='h-32' />
 
-                    <Iq7Input
+                    <Iq7FormInput
                         inputClassName='text-center'
                         placeholder='Fiance Name'
                         name='fiance_1_name'
@@ -47,7 +47,7 @@ export function EditEventDetailsPanel({
                 <div className='flex flex-col items-center'>
                     <PersonIcon className='h-32' />
 
-                    <Iq7Input
+                    <Iq7FormInput
                         inputClassName='text-center'
                         placeholder='Fiance Name'
                         name='fiance_2_name'
@@ -59,7 +59,7 @@ export function EditEventDetailsPanel({
 
             <div className='font-medium'>ARE GETTING MARRIED</div>
 
-            <Iq7Input
+            <Iq7FormInput
                 placeholder='Wedding Date'
                 type='date'
                 name='primary_date'
@@ -96,7 +96,7 @@ export function EditEventDetailsPanel({
                     <>
                         <div className='flex-1 flex items-center gap-2 justify-center'>
                             beforewe.co/
-                            <Iq7Input
+                            <Iq7FormInput
                                 placeholder={aliasValue || 'your-event-url'}
                                 name='alias'
                                 control={control}
