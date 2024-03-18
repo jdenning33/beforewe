@@ -5,12 +5,13 @@ import {
 
 export type IGuest = {
     id: number;
-    name: string;
-    plus_count: number;
+    first_name: string;
+    last_name: string;
     relationship: string;
+    email?: string;
+    phone_number?: string;
     should_invite_score: number;
     group_id: number;
-    invitation_id: number;
 };
 
 const useGuestStore = createSimpleZustandStore<IGuest>();

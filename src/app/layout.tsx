@@ -66,7 +66,7 @@ function Content({ children }: { children: React.ReactNode }) {
 
     return isAuthInitialized ? (
         <>
-            <Iq7Navbar className='sticky top-0 z-[2]'>
+            <Iq7Navbar className='sticky top-0 z-[100]'>
                 <Iq7Navbar.LeftOptions>
                     <NavigationMenu />
                 </Iq7Navbar.LeftOptions>

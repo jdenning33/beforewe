@@ -4,7 +4,7 @@ import { Iq7Table } from '@/src/components/Iq7Table';
 import { useExpenses } from '../hooks/useExpenses';
 import { IExpense } from '../hooks/models';
 import { colVis } from './BudgetExpensesList';
-import Iq7TextInput from '@/src/components/NonFormInputs/Iq7TextInput';
+import { Iq7TextInput } from '@/src/components/NonFormInputs/Iq7TextInput';
 import Iq7CurrencyInput from '@/src/components/NonFormInputs/Iq7CurrencyInput';
 import { currencyFormatter } from '@/src/utils/currencyFormatter';
 

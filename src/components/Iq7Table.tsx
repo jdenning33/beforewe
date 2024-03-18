@@ -57,7 +57,7 @@ Iq7Table.Row = function Iq7TableTRow({
 }: Iq7TableTRowProps) {
     return (
         <tr
-            className={`hover:bg-base-200 ${className}`}
+            className={`hover:bg-base-200 focus-within:bg-base-200 ${className}`}
             onClick={onClick}
             {...props}
         >
@@ -70,7 +70,7 @@ Iq7Table.SummaryRow = function Iq7TableTSummaryRow(props: Iq7TableTRowProps) {
     return (
         <Iq7Table.Row
             {...props}
-            className={`bg-accent text-accent-content ${props.className}`}
+            className={`bg-accent text-accent-content hover:bg-accent hover:text-accent-content ${props.className}`}
         />
     );
 };

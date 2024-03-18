@@ -4,6 +4,11 @@ import {
     useEffect,
     useState,
 } from 'react';
+import {
+    groupSneakyInputClasses,
+    inputClasses,
+    sneakyInputClasses,
+} from './inputStyles';
 
 type Props2 = {
     value: string | undefined;
@@ -14,7 +19,7 @@ type Props2 = {
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
     'value'
 >;
-export default function Iq7TextInput({
+export function Iq7TextInput({
     value,
     onValueChange,
     sneaky = false,
@@ -28,13 +33,11 @@ export default function Iq7TextInput({
     return (
         <input
             {...props}
-            className={`p-1 truncate w-full ${
-                sneaky ? 'bg-[unset] hover:bg-white' : ''
-            } ${groupSneaky ? 'bg-[unset] group-hover:bg-white' : ''} ${
-                props.className
-            }`}
+            className={`${inputClasses} ${sneaky ? sneakyInputClasses : ''} ${
+                groupSneaky ? groupSneakyInputClasses : ''
+            } ${props.className}`}
             type='text'
-            size={currentValue?.length}
+            size={props.size || Math.max((currentValue?.length || 0) - 3, 5)}
             value={currentValue}
             onChange={(e) => setCurrentValue(e.currentTarget.value)}
             onBlur={(e) => {

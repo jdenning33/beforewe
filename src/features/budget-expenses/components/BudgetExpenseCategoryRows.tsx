@@ -9,7 +9,7 @@ import { useLocalItem } from '@/src/utils/useLocalItem';
 import { AddExpenseRow } from './AddExpenseRow';
 import { colVis } from './BudgetExpensesList';
 import { Iq7NumberInput } from '@/src/components/NonFormInputs/Iq7NumberInput';
-import Iq7TextInput from '@/src/components/NonFormInputs/Iq7TextInput';
+import { Iq7TextInput } from '@/src/components/NonFormInputs/Iq7TextInput';
 import { currencyFormatter } from '@/src/utils/currencyFormatter';
 import { useBudgetExpensesSummary } from '../hooks/useBudgetCategorySummary';
 
