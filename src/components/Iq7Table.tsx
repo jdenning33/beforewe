@@ -29,7 +29,7 @@ Iq7Table.HeadRow = function Iq7TableTHeadRow({
     className?: string;
 }) {
     return (
-        <tr className={`sticky top-0 bg-base-100 z-10 ${className}`}>
+        <tr className={`sticky top-0 bg-base-100 shadow z-10 ${className}`}>
             {children}
         </tr>
     );

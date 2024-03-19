@@ -15,6 +15,7 @@ type Props2 = {
     onValueChange: (value: string) => any;
     sneaky?: boolean;
     groupSneaky?: boolean;
+    instant?: boolean;
 } & Omit<
     DetailedHTMLProps<InputHTMLAttributes<HTMLInputElement>, HTMLInputElement>,
     'value'
@@ -24,6 +25,7 @@ export function Iq7TextInput({
     onValueChange,
     sneaky = false,
     groupSneaky = false,
+    instant = false,
     ...props
 }: Props2) {
     const [currentValue, setCurrentValue] = useState(value);
@@ -39,7 +41,13 @@ export function Iq7TextInput({
             type='text'
             size={props.size || Math.max((currentValue?.length || 0) - 3, 5)}
             value={currentValue}
-            onChange={(e) => setCurrentValue(e.currentTarget.value)}
+            onChange={(e) => {
+                setCurrentValue(e.currentTarget.value);
+                instant && onValueChange(e.currentTarget.value);
+            }}
+            onClick={(e) => {
+                e.stopPropagation();
+            }}
             onBlur={(e) => {
                 value != currentValue && onValueChange(currentValue || '');
                 props.onBlur && props.onBlur(e);

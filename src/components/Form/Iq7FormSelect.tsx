@@ -23,8 +23,9 @@ export function Iq7FormSelect<T extends FieldValues>({
         <div className={`flex flex-col relative group ${className}`}>
             {label && <label htmlFor={field.name}>{label}</label>}
             <select
+                id={field.name}
                 className={
-                    'input input-sm ' +
+                    'input input-sm rounded border-base-300 ' +
                     (fieldState.invalid ? 'input-warning ' : '') +
                     inputClassName
                 }

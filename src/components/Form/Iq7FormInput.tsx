@@ -15,6 +15,7 @@ export function Iq7FormInput<T extends FieldValues>({
 }: {
     label?: string;
     type?: string;
+    size?: number;
     placeholder?: string;
     className?: string;
     inputClassName?: string;
@@ -47,12 +48,15 @@ export function Iq7FormInput<T extends FieldValues>({
         >
             {label && <label htmlFor={field.name}>{label}</label>}
             <input
+                id={field.name}
+                autoComplete='off'
+                size={props.size}
                 type={type === 'date' && placeholder ? 'text' : type}
                 onFocus={(e) => {
                     if (type === 'date' && placeholder) e.target.type = 'date';
                 }}
                 className={
-                    'input input-sm ' +
+                    'input input-sm rounded border border-base-300 ' +
                     (fieldState.invalid ? 'input-warning ' : '') +
                     inputClassName
                 }

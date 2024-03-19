@@ -11,16 +11,23 @@ export type IGuest = {
     email?: string;
     phone_number?: string;
     should_invite_score: number;
-    group_id: number;
+    group_id?: number;
 };
 
 const useGuestStore = createSimpleZustandStore<IGuest>();
 
 export function useGuests() {
-    const localStorage = useSimpleLocalStorage(useGuestStore(), 'guests');
+    const guestLocalStorage = useSimpleLocalStorage(useGuestStore(), 'guests');
     return {
-        guests: localStorage.items,
-        saveGuest: localStorage.saveItem,
-        deleteGuest: localStorage.deleteItem,
+        guests: guestLocalStorage.items,
+        guestRelationships: Array.from(
+            new Set(
+                guestLocalStorage.items
+                    .map((g) => g.relationship)
+                    .concat(['Family', 'Friend', 'Colleague'])
+            )
+        ),
+        saveGuest: guestLocalStorage.saveItem,
+        deleteGuest: guestLocalStorage.deleteItem,
     };
 }

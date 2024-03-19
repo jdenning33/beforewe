@@ -3,11 +3,17 @@ import { IGuest, useGuests } from '../hooks/useGuests';
 import { Iq7ToggleGroup } from '@/src/components/NonFormInputs/Iq7ToggleGroup';
 import { Iq7TextInput } from '@/src/components/NonFormInputs/Iq7TextInput';
 import { Iq7Select } from '@/src/components/NonFormInputs/Iq7SelectInput';
+import { Iq7Dialog } from '@/src/components/Iq7Dialog';
+import { Iq7Button } from '@/src/components/Iq7Button';
+import { EditGuestForm } from './EditGuestForm';
+import { TrashIcon } from '../../../components/icons/TrashIcon';
 
 export type GuestColumns = {
+    full_name_link: GuestColumnDefinition;
     first_name: GuestColumnDefinition;
     last_name: GuestColumnDefinition;
     relationship: GuestColumnDefinition;
+    relationship_select: GuestColumnDefinition;
     should_invite_score: GuestColumnDefinition;
     should_invite_score_select: GuestColumnDefinition;
     email: GuestColumnDefinition;
@@ -15,20 +21,29 @@ export type GuestColumns = {
     address: GuestColumnDefinition;
     delete: GuestColumnDefinition;
 };
-type GuestColumnDefinition = {
+export type GuestColumnDefinition = {
     th: string;
     td: (guest: IGuest) => React.ReactNode;
 };
+export const likelyToInviteOptions = [
+    [4, 'Yes'],
+    [3, 'Probably'],
+    [2, 'If Possible'],
+    [1, 'No'],
+] as [number, string][];
 export const useGuestColumns = (): GuestColumns => {
-    const { saveGuest, deleteGuest } = useGuests();
-    const likelyToInviteOptions = [
-        [4, 'Yes'],
-        [3, 'Probably'],
-        [2, 'If Possible'],
-        [1, 'No'],
-    ] as [number, string][];
+    const { saveGuest, deleteGuest, guestRelationships } = useGuests();
 
     return {
+        full_name_link: {
+            th: 'Guest Name',
+            td: (guest: IGuest) => (
+                <span className='pl-2 font-medium hover:underline opacity-90 hover:opacity-100'>
+                    {guest.first_name + ' ' + guest.last_name}
+                </span>
+            ),
+        },
+
         first_name: {
             th: 'First Name',
             td: (guest: IGuest) => (
@@ -72,21 +87,45 @@ export const useGuestColumns = (): GuestColumns => {
                 />
             ),
         },
+        relationship_select: {
+            th: 'Relation',
+            td: (guest: IGuest) => (
+                <Iq7Select
+                    value={guest.relationship}
+                    className='min-w-full'
+                    onValueChange={(v) =>
+                        saveGuest({ ...guest, relationship: v })
+                    }
+                    groupSneaky={true}
+                >
+                    {guestRelationships.map((relationship) => (
+                        <Iq7Select.Item
+                            key={relationship}
+                            value={relationship || 'none'}
+                        >
+                            {relationship}
+                        </Iq7Select.Item>
+                    ))}
+                </Iq7Select>
+            ),
+        },
         should_invite_score: {
             th: 'Invite?',
             td: (guest: IGuest) => (
-                <Iq7ToggleGroup
-                    value={guest.should_invite_score + ''}
-                    onValueChange={(v) =>
-                        saveGuest({ ...guest, should_invite_score: +v })
-                    }
-                >
-                    {likelyToInviteOptions.map(([score, label]) => (
-                        <Iq7ToggleGroup.Item key={score} value={score + ''}>
-                            {label}
-                        </Iq7ToggleGroup.Item>
-                    ))}
-                </Iq7ToggleGroup>
+                <div onClick={(e) => e.stopPropagation()}>
+                    <Iq7ToggleGroup
+                        value={guest.should_invite_score + ''}
+                        onValueChange={(v) =>
+                            saveGuest({ ...guest, should_invite_score: +v })
+                        }
+                    >
+                        {likelyToInviteOptions.map(([score, label]) => (
+                            <Iq7ToggleGroup.Item key={score} value={score + ''}>
+                                {label}
+                            </Iq7ToggleGroup.Item>
+                        ))}
+                    </Iq7ToggleGroup>
+                </div>
             ),
         },
         should_invite_score_select: {
@@ -138,7 +177,8 @@ export const useGuestColumns = (): GuestColumns => {
             td: (guest: IGuest) => (
                 <button
                     className='btn btn-circle btn-xs btn-ghost'
-                    onClick={() => {
+                    onClick={(e) => {
+                        e.stopPropagation();
                         if (
                             confirm(
                                 'Are you sure you want to delete guest, ' +
@@ -152,14 +192,7 @@ export const useGuestColumns = (): GuestColumns => {
                         }
                     }}
                 >
-                    {/* trashcan icon */}
-                    <svg
-                        xmlns='http://www.w3.org/2000/svg'
-                        className='w-2/3 h-2/3 fill-base-content opacity-80'
-                        viewBox='0 0 24 24'
-                    >
-                        <path d='M3 6v18h18v-18h-18zm5 14c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm5 0c0 .552-.448 1-1 1s-1-.448-1-1v-10c0-.552.448-1 1-1s1 .448 1 1v10zm4-18v2h-20v-2h5.711c.9 0 1.631-1.099 1.631-2h5.315c0 .901.73 2 1.631 2h5.712z' />
-                    </svg>
+                    <TrashIcon className='w-2/3 h-2/3 fill-base-content opacity-80' />
                 </button>
             ),
         },

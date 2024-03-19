@@ -1,21 +1,14 @@
 'use client';
 import { Iq7PageTitle } from '@/src/components/Iq7PageTitle';
-import { IGuest } from '../../../features/guests/hooks/useGuests';
 import { Iq7ToggleGroup } from '@/src/components/NonFormInputs/Iq7ToggleGroup';
 import { GuestList } from '../../../features/guests/components/GuestList';
-import { AddGuestButton } from '../../../features/guests/components/AddGuestButton';
 import {
     GuestListStateProvider,
     useGuestListState,
 } from '../../../features/guests/hooks/useGuestListState';
-
-export const defaultGuest: Omit<IGuest, 'id'> = {
-    first_name: '',
-    last_name: '',
-    relationship: '',
-    should_invite_score: 3,
-    group_id: 0,
-};
+import { EditGuestModal } from '@/src/features/guests/components/EditGuestModal';
+import { ManagePartyModal } from '@/src/features/guests/components/ManagePartyModal';
+import { defaultGuest } from '../../../features/guests/hooks/defaultGuest';
 
 export default function GuestsPage() {
     return (
@@ -27,15 +20,37 @@ export default function GuestsPage() {
                     Track the guests that you might be inviting to your wedding.
                 </div>
                 <div className='mb-8'>
-                    Wat part of the process are you at?
+                    What are we doing today?
                     <ActiveGuestViewToggle />
                 </div>
                 <div>
                     <GuestList />
-                    <AddGuestButton />
+                    <div className='mt-4 flex gap-2'>
+                        <AddGuestButton />
+                        <AddGuestPartyButton />
+                    </div>
                 </div>
             </div>
         </GuestListStateProvider>
+    );
+}
+
+function AddGuestButton() {
+    return (
+        <EditGuestModal title='New Guest' guest={{ ...defaultGuest }}>
+            <div className='btn btn-sm btn-accent flex justify-start whitespace-nowrap rounded'>
+                New Individual Guest
+            </div>
+        </EditGuestModal>
+    );
+}
+function AddGuestPartyButton() {
+    return (
+        <ManagePartyModal title='New Party' groupId={Math.random() * 1000}>
+            <div className='btn btn-sm xbtn-accent btn-outline flex justify-start whitespace-nowrap rounded'>
+                New Guest Party
+            </div>
+        </ManagePartyModal>
     );
 }
 
@@ -53,7 +68,7 @@ function ActiveGuestViewToggle() {
                 Collecting Contact Info
             </Iq7ToggleGroup.Item>
             <Iq7ToggleGroup.Item value='building'>
-                Building Invitations
+                Tracking Communication
             </Iq7ToggleGroup.Item>
         </Iq7ToggleGroup>
     );

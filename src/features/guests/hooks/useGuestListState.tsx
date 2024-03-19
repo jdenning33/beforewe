@@ -25,9 +25,8 @@ export const GuestListStateProvider = ({
     useEffect(() => {
         if (purpose == 'deciding') {
             setActiveColumns([
-                'first_name',
-                'last_name',
-                'relationship',
+                'full_name_link',
+                'relationship_select',
                 'should_invite_score',
                 'delete',
             ]);
@@ -42,8 +41,7 @@ export const GuestListStateProvider = ({
             ]);
         } else if (purpose == 'building') {
             setActiveColumns([
-                'first_name',
-                'last_name',
+                'full_name_link',
                 'relationship',
                 'should_invite_score_select',
                 'email',

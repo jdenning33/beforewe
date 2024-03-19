@@ -32,6 +32,7 @@ Iq7ToggleGroup.Item = function ({
     return (
         <RadixToggle.Item
             className='btn btn-xs rounded-none first:rounded-l-lg last:rounded-r-lg data-[state=on]:btn-active'
+            onClick={(e) => e.stopPropagation()}
             value={value}
         >
             {children}

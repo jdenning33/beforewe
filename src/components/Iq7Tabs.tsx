@@ -1,6 +1,37 @@
 import * as Tabs from '@radix-ui/react-tabs';
 import { Iq7StandardProps } from './Iq7StandardProps';
 
+type Iq7Tab = {
+    value: string;
+    label: string;
+    content: React.ReactNode;
+};
+export function Iq7QuickTabs({
+    className,
+    tabs,
+    defaultTab: defaultTab,
+}: { defaultTab: string; tabs: Iq7Tab[] } & Omit<
+    Iq7StandardProps,
+    'children'
+>) {
+    return (
+        <Iq7Tabs defaultValue={defaultTab} className={className}>
+            <Iq7Tabs.List>
+                {tabs.map((tab) => (
+                    <Iq7Tabs.Trigger value={tab.value}>
+                        {tab.label}
+                    </Iq7Tabs.Trigger>
+                ))}
+            </Iq7Tabs.List>
+            {tabs.map((tab) => (
+                <Iq7Tabs.Content value={tab.value}>
+                    {tab.content}
+                </Iq7Tabs.Content>
+            ))}
+        </Iq7Tabs>
+    );
+}
+
 export function Iq7Tabs({
     children,
     className,
