@@ -25,8 +25,10 @@ export function Iq7FormSelect<T extends FieldValues>({
             <select
                 id={field.name}
                 className={
-                    'input input-sm rounded border-base-300 ' +
-                    (fieldState.invalid ? 'input-warning ' : '') +
+                    'input input-sm rounded bg-white ' +
+                    (fieldState.invalid
+                        ? 'input-warning '
+                        : ' border border-base-300 ') +
                     inputClassName
                 }
                 {...field}

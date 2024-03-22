@@ -56,8 +56,10 @@ export function Iq7FormInput<T extends FieldValues>({
                     if (type === 'date' && placeholder) e.target.type = 'date';
                 }}
                 className={
-                    'input input-sm rounded border border-base-300 ' +
-                    (fieldState.invalid ? 'input-warning ' : '') +
+                    'input input-sm rounded bg-white ' +
+                    (fieldState.invalid
+                        ? 'input-warning '
+                        : ' border border-base-300 ') +
                     inputClassName
                 }
                 {...newfield}

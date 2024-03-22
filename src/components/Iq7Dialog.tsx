@@ -46,16 +46,7 @@ Iq7Dialog.Content2 = forwardRef<
     return (
         <RadixDialog.Portal>
             <Iq7Dialog.Overlay />
-            <div
-                ref={ref}
-                className='fixed inset-0 flex w-screen items-center justify-center z-[102]'
-            >
-                <RadixDialog.Content
-                    className={`w-full max-w-sm rounded  p-4 bg-base-200 shadow ${className}`}
-                >
-                    {children}
-                </RadixDialog.Content>
-            </div>
+            <Iq7Dialog.Content>{children}</Iq7Dialog.Content>
         </RadixDialog.Portal>
     );
 });
@@ -70,7 +61,7 @@ Iq7Dialog.Content = forwardRef<
             className='fixed inset-0 flex w-screen items-center justify-center z-[102]'
         >
             <RadixDialog.Content
-                className={`w-full max-w-sm rounded  p-4 bg-base-200 shadow ${className}`}
+                className={`w-full max-w-sm rounded p-4 bg-base-200 shadow overflow-auto max-h-[90vh] ${className}`}
             >
                 {children}
             </RadixDialog.Content>

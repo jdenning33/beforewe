@@ -1,11 +1,14 @@
 'use client';
 import { createContext, useContext, useEffect, useState } from 'react';
 import { GuestColumns } from '../components/GuestColumns';
+import { Envelope, useGuestCommunication } from './useGuestCommunication';
+import { ManageEnvelopeModal } from '../components/ManageEnvelopeModal';
 
 type GuestListState = {
     activeColumns: (keyof GuestColumns)[];
     purpose: 'deciding' | 'collecting' | 'building';
     setPurpose: (purpose: 'deciding' | 'collecting' | 'building') => any;
+    setEnvelopeToManage: (envelope: number | undefined) => any;
 };
 const GuestListStateContext = createContext<GuestListState | undefined>(
     undefined
@@ -21,6 +24,7 @@ export const GuestListStateProvider = ({
     const [purpose, setPurpose] = useState<
         'deciding' | 'collecting' | 'building'
     >('deciding');
+    const [envelopeToManage, setEnvelopeToManage] = useState<number | null>();
 
     useEffect(() => {
         if (purpose == 'deciding') {
@@ -28,34 +32,41 @@ export const GuestListStateProvider = ({
                 'full_name_link',
                 'relationship_select',
                 'should_invite_score',
-                'delete',
             ]);
         } else if (purpose == 'collecting') {
-            setActiveColumns([
-                'first_name',
-                'last_name',
-                'email',
-                'phone_number',
-                'address',
-                'delete',
-            ]);
+            setActiveColumns(['full_name_link', 'email', 'phone_number']);
         } else if (purpose == 'building') {
             setActiveColumns([
                 'full_name_link',
-                'relationship',
+                'relationship_select',
                 'should_invite_score_select',
                 'email',
                 'phone_number',
-                'address',
-                'delete',
             ]);
         }
     }, [purpose]);
 
+    const { envelopes } = useGuestCommunication();
+    const envelopeToManageObject = envelopes.find(
+        (e) => e.id === envelopeToManage
+    );
+
     return (
         <GuestListStateContext.Provider
-            value={{ activeColumns, purpose, setPurpose }}
+            value={{
+                activeColumns,
+                purpose,
+                setPurpose,
+                setEnvelopeToManage,
+            }}
         >
+            {envelopeToManageObject && (
+                <ManageEnvelopeModal
+                    isOpen={true}
+                    envelope={envelopeToManageObject}
+                >{``}</ManageEnvelopeModal>
+            )}
+
             {children}
         </GuestListStateContext.Provider>
     );

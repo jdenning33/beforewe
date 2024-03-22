@@ -15,7 +15,7 @@ export function Iq7ToggleGroup({
             type='single'
             value={value}
             onValueChange={onValueChange}
-            className='flex gap-[2px]'
+            className='flex gap-[1px]'
         >
             {children}
         </RadixToggle.Root>
@@ -31,7 +31,7 @@ Iq7ToggleGroup.Item = function ({
 }) {
     return (
         <RadixToggle.Item
-            className='btn btn-xs rounded-none first:rounded-l-lg last:rounded-r-lg data-[state=on]:btn-active'
+            className='btn btn-xs btn-outline rounded-none first:rounded-l-lg last:rounded-r-lg data-[state=on]:btn-active'
             onClick={(e) => e.stopPropagation()}
             value={value}
         >

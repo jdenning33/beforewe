@@ -46,7 +46,7 @@ function AddGuestButton() {
 }
 function AddGuestPartyButton() {
     return (
-        <ManagePartyModal title='New Party' groupId={Math.random() * 1000}>
+        <ManagePartyModal title='New Party' groupId={undefined}>
             <div className='btn btn-sm xbtn-accent btn-outline flex justify-start whitespace-nowrap rounded'>
                 New Guest Party
             </div>

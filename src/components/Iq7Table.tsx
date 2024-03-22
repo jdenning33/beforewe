@@ -47,18 +47,18 @@ Iq7Table.Body = function Iq7TableTBody({
 type Iq7TableTRowProps = {
     children: React.ReactNode;
     className?: string;
-    onClick?: (e: React.MouseEvent) => void;
-};
+} & React.DetailedHTMLProps<
+    React.HTMLAttributes<HTMLTableRowElement>,
+    HTMLTableRowElement
+>;
 Iq7Table.Row = function Iq7TableTRow({
     children,
     className,
-    onClick,
     ...props
 }: Iq7TableTRowProps) {
     return (
         <tr
             className={`hover:bg-base-200 focus-within:bg-base-200 ${className}`}
-            onClick={onClick}
             {...props}
         >
             {children}

@@ -7,6 +7,11 @@ import { Iq7Dialog } from '@/src/components/Iq7Dialog';
 import { Iq7Button } from '@/src/components/Iq7Button';
 import { EditGuestForm } from './EditGuestForm';
 import { TrashIcon } from '../../../components/icons/TrashIcon';
+import { ManageEnvelopeButton } from './ManageEnvelopeButton';
+import { EditGuestModal } from './EditGuestModal';
+import { en } from '@supabase/auth-ui-shared';
+import { useGuestCommunication } from '../hooks/useGuestCommunication';
+import { useGuestsByGroup } from '../hooks/useGuestsByGroup';
 
 export type GuestColumns = {
     full_name_link: GuestColumnDefinition;
@@ -32,15 +37,20 @@ export const likelyToInviteOptions = [
     [1, 'No'],
 ] as [number, string][];
 export const useGuestColumns = (): GuestColumns => {
-    const { saveGuest, deleteGuest, guestRelationships } = useGuests();
+    const { guests, saveGuest, deleteGuest, guestRelationships } = useGuests();
+    const guestsByGroup = useGuestsByGroup();
+    const { createEnvelopeWithGuests, envelopes, envelopeAssignments } =
+        useGuestCommunication();
 
     return {
         full_name_link: {
             th: 'Guest Name',
             td: (guest: IGuest) => (
-                <span className='pl-2 font-medium hover:underline opacity-90 hover:opacity-100'>
-                    {guest.first_name + ' ' + guest.last_name}
-                </span>
+                <EditGuestModal title='Edit Guest' guest={guest}>
+                    <span className='pl-2 font-medium hover:underline opacity-90 hover:opacity-100'>
+                        {guest.first_name + ' ' + guest.last_name}
+                    </span>
+                </EditGuestModal>
             ),
         },
 
@@ -171,7 +181,44 @@ export const useGuestColumns = (): GuestColumns => {
                 />
             ),
         },
-        address: { th: 'Address', td: (guest: IGuest) => '' },
+        address: {
+            th: 'Address',
+            td: (guest: IGuest) => {
+                const envelopeAssignment = envelopeAssignments.find(
+                    (ea) => ea.guestId === guest.id
+                );
+                const envelope = envelopeAssignment
+                    ? envelopes.find(
+                          (e) => e.id === envelopeAssignment.envelopeId
+                      )
+                    : undefined;
+                const guestGroup = guestsByGroup[guest.group_id || guest.id];
+                if (!envelope)
+                    return (
+                        <div
+                            onClick={(e) => {
+                                createEnvelopeWithGuests(
+                                    {
+                                        guest_group_id:
+                                            guest.group_id || guest.id,
+                                        to: guestGroup
+                                            .map((g) => g.first_name)
+                                            .join(' '),
+                                        zip: '',
+                                        street: '',
+                                        city: '',
+                                        state: '',
+                                    },
+                                    guestGroup?.map((g) => g.id) || []
+                                );
+                            }}
+                        >
+                            Add Envelope {envelopeAssignment?.id}
+                        </div>
+                    );
+                return <ManageEnvelopeButton envelope={envelope} />;
+            },
+        },
         delete: {
             th: '',
             td: (guest: IGuest) => (

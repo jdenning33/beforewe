@@ -2,6 +2,7 @@ import {
     createSimpleZustandStore,
     useSimpleLocalStorage,
 } from '@/src/utils/useSimpleZustandStore';
+import { Envelope, useGuestCommunication } from './useGuestCommunication';
 
 export type IGuest = {
     id: number;
