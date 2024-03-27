@@ -32,9 +32,16 @@ export const GuestListStateProvider = ({
                 'full_name_link',
                 'relationship_select',
                 'should_invite_score',
+                'manage_group',
             ]);
         } else if (purpose == 'collecting') {
-            setActiveColumns(['full_name_link', 'email', 'phone_number']);
+            setActiveColumns([
+                'full_name_link',
+                'email',
+                'phone_number',
+                'address',
+                'manage_group',
+            ]);
         } else if (purpose == 'building') {
             setActiveColumns([
                 'full_name_link',
@@ -42,6 +49,7 @@ export const GuestListStateProvider = ({
                 'should_invite_score_select',
                 'email',
                 'phone_number',
+                'manage_group',
             ]);
         }
     }, [purpose]);

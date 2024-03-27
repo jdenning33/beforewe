@@ -2,17 +2,12 @@
 import { Iq7Table } from '@/src/components/Iq7Table';
 import { GuestColumnDefinition, useGuestColumns } from './GuestColumns';
 import { ManagePartyButton } from './ManagePartyButton';
-import {
-    useGuestsByGroup,
-    useGuestsByGroupList,
-} from '../hooks/useGuestsByGroup';
+import { useGuestsByGroupList } from '../hooks/useGuestsByGroup';
 import { useGuestListState } from '@/src/features/guests/hooks/useGuestListState';
 import { IGuest } from '../hooks/useGuests';
-import { EditGuestModal } from './EditGuestModal';
 import { ManageEnvelopeButton } from './ManageEnvelopeButton';
 import { useGuestCommunication } from '../hooks/useGuestCommunication';
 import { useState } from 'react';
-import { env } from 'process';
 
 export function GuestList({}: {}) {
     const guestsByGroup = useGuestsByGroupList();
@@ -31,83 +26,152 @@ export function GuestList({}: {}) {
                 <Iq7Table.Head>
                     <Iq7Table.HeadRow className='bg-base-200'>
                         {/* Guest Column Labels */}
-                        {columns.map((col) => (
-                            <th key={col.th}>{col.th}</th>
-                        ))}
-                        <th className='w-0'></th>
-                        <th className='w-0'></th>
+                        {activeColumns.map((col) =>
+                            (() => {
+                                switch (col) {
+                                    case 'full_name_link':
+                                    case 'first_name':
+                                    case 'last_name':
+                                    case 'relationship':
+                                    case 'relationship_select':
+                                    case 'should_invite_score':
+                                    case 'should_invite_score_select':
+                                    case 'email':
+                                    case 'phone_number':
+                                    case 'address':
+                                    case 'delete':
+                                        return (
+                                            <th key={col}>
+                                                {allColumns[col].th}
+                                            </th>
+                                        );
+                                    case 'manage_group':
+                                        return <th key={col}></th>;
+                                    default:
+                                        return col;
+                                }
+                            })()
+                        )}
                     </Iq7Table.HeadRow>
                 </Iq7Table.Head>
                 {guestsByGroup.map((group, groupIndex) => (
                     <Iq7Table.Body className='border-y-2 xhover:font-bold odd:bg-gray-300 odd:bg-opacity-20 group/guestgroup'>
                         {/* Guest Column Cells */}
                         {group.guests.map((guest, index) => (
-                            <GuestRow
-                                className={
+                            <Iq7Table.Row
+                                className={`group ${
                                     hoveredGroupId === group.groupId
                                         ? '!bg-base-200 '
                                         : ' '
-                                }
+                                }`}
                                 key={guest.id}
-                                guest={guest}
-                                columns={columns}
                             >
-                                <>
-                                    {index == 0 && (
-                                        <td
-                                            className='m-1 p-1 group-hover/guestgroup:bg-base-200'
-                                            onMouseEnter={() => {
-                                                setHoveredGroupId(
-                                                    guest.group_id || guest.id
+                                {activeColumns.map((col) =>
+                                    (() => {
+                                        switch (col) {
+                                            case 'full_name_link':
+                                            case 'first_name':
+                                            case 'last_name':
+                                            case 'relationship':
+                                            case 'relationship_select':
+                                            case 'should_invite_score':
+                                            case 'should_invite_score_select':
+                                            case 'email':
+                                            case 'phone_number':
+                                            case 'delete':
+                                                return (
+                                                    <td className='p-1'>
+                                                        {allColumns[col].td(
+                                                            guest
+                                                        )}
+                                                    </td>
                                                 );
-                                            }}
-                                            onMouseLeave={() => {
-                                                setHoveredGroupId(null);
-                                            }}
-                                            rowSpan={group.guests.length}
-                                        >
-                                            <ManageEnvelopeButton
-                                                envelope={
-                                                    envelopes.find(
-                                                        (envelope) =>
-                                                            envelope.guest_group_id ===
-                                                            group.groupId
-                                                    ) || {
-                                                        guest_group_id:
-                                                            guest.group_id ||
-                                                            guest.id,
-                                                        to: getAddressDefaultTo(
-                                                            group.guests
-                                                        ),
-                                                        zip: '',
-                                                        street: '',
-                                                        city: '',
-                                                        state: '',
-                                                    }
-                                                }
-                                            />
-                                        </td>
-                                    )}
-                                    {index === 0 && (
-                                        <td
-                                            className='p-1 px-4 border-l w-0 group-hover/guestgroup:bg-base-200'
-                                            onMouseEnter={() => {
-                                                setHoveredGroupId(
-                                                    group.groupId
+                                            case 'address':
+                                                return (
+                                                    index == 0 && (
+                                                        <td
+                                                            className='m-1 p-1 group-hover/guestgroup:bg-base-200'
+                                                            onMouseEnter={() => {
+                                                                setHoveredGroupId(
+                                                                    guest.group_id ||
+                                                                        guest.id
+                                                                );
+                                                            }}
+                                                            onMouseLeave={() => {
+                                                                setHoveredGroupId(
+                                                                    null
+                                                                );
+                                                            }}
+                                                            rowSpan={
+                                                                group.guests
+                                                                    .length
+                                                            }
+                                                        >
+                                                            <ManageEnvelopeButton
+                                                                envelope={
+                                                                    envelopes.find(
+                                                                        (
+                                                                            envelope
+                                                                        ) =>
+                                                                            envelope.guest_group_id ===
+                                                                            group.groupId
+                                                                    ) || {
+                                                                        guest_group_id:
+                                                                            guest.group_id ||
+                                                                            guest.id,
+                                                                        to: buildEnvelopeName(
+                                                                            group.guests
+                                                                        ),
+                                                                        zip: '',
+                                                                        street: '',
+                                                                        city: '',
+                                                                        state: '',
+                                                                    }
+                                                                }
+                                                            />
+                                                        </td>
+                                                    )
                                                 );
-                                            }}
-                                            onMouseLeave={() => {
-                                                setHoveredGroupId(null);
-                                            }}
-                                            rowSpan={group.guests.length}
-                                        >
-                                            <ManagePartyButton
-                                                groupId={group.groupId}
-                                            />
-                                        </td>
-                                    )}
-                                </>
-                            </GuestRow>
+                                            case 'manage_group':
+                                                return (
+                                                    index == 0 && (
+                                                        <td
+                                                            className='text-center m-1 p-1 group-hover/guestgroup:bg-base-200'
+                                                            onMouseEnter={() => {
+                                                                setHoveredGroupId(
+                                                                    guest.group_id ||
+                                                                        guest.id
+                                                                );
+                                                            }}
+                                                            onMouseLeave={() => {
+                                                                setHoveredGroupId(
+                                                                    null
+                                                                );
+                                                            }}
+                                                            onBlur={() => {
+                                                                setHoveredGroupId(
+                                                                    null
+                                                                );
+                                                            }}
+                                                            rowSpan={
+                                                                group.guests
+                                                                    .length
+                                                            }
+                                                        >
+                                                            <ManagePartyButton
+                                                                groupId={
+                                                                    group.groupId
+                                                                }
+                                                            />
+                                                        </td>
+                                                    )
+                                                );
+                                            default:
+                                                return col;
+                                        }
+                                    })()
+                                )}
+                            </Iq7Table.Row>
                         ))}
                     </Iq7Table.Body>
                 ))}
@@ -116,7 +180,7 @@ export function GuestList({}: {}) {
     );
 }
 
-function getAddressDefaultTo(guests: IGuest[]) {
+function buildEnvelopeName(guests: IGuest[]) {
     if (guests.length === 0) return 'Guest';
 
     //guests have different last names
@@ -135,37 +199,5 @@ function getAddressDefaultTo(guests: IGuest[]) {
         guests.map((g) => g.first_name).join(' and ') +
         ' ' +
         guests[0].last_name
-    );
-}
-
-function GuestRow({
-    className,
-    guest,
-    columns,
-    children,
-    ...props
-}: {
-    className: string;
-    guest: IGuest;
-    columns: GuestColumnDefinition[];
-    children?: React.ReactNode;
-} & React.DetailedHTMLProps<
-    React.HTMLAttributes<HTMLTableRowElement>,
-    HTMLTableRowElement
->) {
-    return (
-        <Iq7Table.Row
-            className={`group cursor-pointer border-none ${className}`}
-            {...props}
-        >
-            <>
-                {columns.map((col) => (
-                    <td key={col.th} className='p-1'>
-                        {col.td(guest)}
-                    </td>
-                ))}
-                {children}
-            </>
-        </Iq7Table.Row>
     );
 }

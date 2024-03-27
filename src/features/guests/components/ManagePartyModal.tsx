@@ -7,8 +7,78 @@ import { Iq7QuickTabs } from '@/src/components/Iq7Tabs';
 import { useGuestsByGroupList } from '../hooks/useGuestsByGroup';
 import { defaultGuest } from '@/src/features/guests/hooks/defaultGuest';
 import { SimpleGuestActionList } from './SimpleGuestActionList';
+import { useEditDrawerState } from '../../edit-drawer/useEditDrawerState';
 
 export function ManagePartyModal({
+    title,
+    groupId,
+    children,
+}: {
+    title: string;
+    groupId: number | undefined;
+    children?: React.ReactNode | ((openModal: () => void) => React.ReactNode);
+}) {
+    const [isModalOpen, setIsModalOpen] = useState(false);
+    const [trueGroupId, setTrueGroupId] = useState(
+        groupId || Math.random() * 1000
+    );
+    const drawer = useEditDrawerState();
+
+    return (
+        <>
+            {typeof children === 'function' ? (
+                children(() => setIsModalOpen(true))
+            ) : (
+                <button
+                    onClick={(_) =>
+                        drawer.push({
+                            title: 'Manage Party',
+                            content: <ManagePartyPanel groupId={trueGroupId} />,
+                        })
+                    }
+                >
+                    {children}
+                </button>
+            )}
+        </>
+    );
+}
+
+export function ManagePartyPanel({ groupId }: { groupId: number }) {
+    return (
+        <div>
+            <div className='font-medium p-1'>Guests in Party</div>
+            <ExistingGuestTable groupId={groupId} />
+            <br />
+            <div className='font-medium p-1'>Add Guest to Party</div>
+            <Iq7QuickTabs
+                defaultTab='new'
+                tabs={[
+                    {
+                        value: 'new',
+                        label: 'New Guest',
+                        content: (
+                            <EditGuestForm
+                                guest={{
+                                    ...defaultGuest,
+                                    group_id: groupId,
+                                }}
+                                afterSave={() => null}
+                            />
+                        ),
+                    },
+                    {
+                        value: 'existing',
+                        label: 'Existing Guest',
+                        content: <LinkExistingGuestPanel groupId={groupId} />,
+                    },
+                ]}
+            />
+        </div>
+    );
+}
+
+export function ManagePartyModal2({
     title,
     groupId,
     children,
@@ -74,6 +144,7 @@ export function ManagePartyModal({
         </>
     );
 }
+
 function LinkExistingGuestPanel({ groupId }: { groupId: number | undefined }) {
     const { saveGuest } = useGuests();
     const guestsByGroup = useGuestsByGroupList();

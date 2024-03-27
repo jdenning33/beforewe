@@ -16,6 +16,11 @@ import {
     AuthUserContextProvider,
     useAuthUser,
 } from '../features/user/hooks/useAuthUser';
+import { EditDrawer } from '../features/edit-drawer/EditDrawer';
+import {
+    EditDrawerProvider,
+    useEditDrawerState,
+} from '../features/edit-drawer/useEditDrawerState';
 
 export const inter = Inter({ subsets: ['latin'] });
 
@@ -51,7 +56,9 @@ export default function RootLayout({
                     <QueryClientProvider client={queryClient}>
                         <Suspense fallback='Loading...'>
                             <AuthUserContextProvider>
-                                <Content>{children}</Content>
+                                <EditDrawerProvider>
+                                    <Content>{children}</Content>
+                                </EditDrawerProvider>
                             </AuthUserContextProvider>
                         </Suspense>
                     </QueryClientProvider>
@@ -63,6 +70,7 @@ export default function RootLayout({
 
 function Content({ children }: { children: React.ReactNode }) {
     const { isAuthInitialized } = useAuthUser();
+    const drawer = useEditDrawerState();
 
     return isAuthInitialized ? (
         <>
@@ -72,6 +80,16 @@ function Content({ children }: { children: React.ReactNode }) {
                 </Iq7Navbar.LeftOptions>
                 <Iq7Navbar.Title>BeforeWe.co</Iq7Navbar.Title>
                 <Iq7Navbar.RightOptions>
+                    <button
+                        onClick={(_) =>
+                            drawer.push({
+                                title: 'Test',
+                                content: <div>Test</div>,
+                            })
+                        }
+                    >
+                        Open Drawer
+                    </button>
                     <Notifications />
                     <AuthOptions />
                 </Iq7Navbar.RightOptions>
@@ -79,6 +97,7 @@ function Content({ children }: { children: React.ReactNode }) {
             <main className='p-4'>
                 <ErrorBoundary FallbackComponent={Iq7ErrorView}>
                     <Suspense fallback={<Iq7LoadingView />}>
+                        <EditDrawer />
                         {children}
                     </Suspense>
                 </ErrorBoundary>

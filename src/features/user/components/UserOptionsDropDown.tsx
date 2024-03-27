@@ -31,7 +31,7 @@ export function UserOptionsDropDown() {
                     </div>
                 </div>
             </Iq7Dropdown.Trigger>
-            <Iq7Dropdown.Content align='end'>
+            <Iq7Dropdown.Content className='z-[105]' align='end'>
                 <ul>
                     <Iq7MenuLink onClick={signOut}>Sign Out</Iq7MenuLink>
                 </ul>

@@ -20,7 +20,7 @@ export function NavigationMenu() {
                     <MenuBarsIcon />
                 </Iq7IconButtonDiv>
             </Iq7Dropdown.Trigger>
-            <Iq7Dropdown.Content align='start'>
+            <Iq7Dropdown.Content className='z-[105]' align='start'>
                 <Suspense fallback={<Iq7LoadingView />}>
                     <Iq7Tabs defaultValue='tools'>
                         <Iq7Tabs.List>

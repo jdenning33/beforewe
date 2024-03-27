@@ -12,6 +12,8 @@ import { EditGuestModal } from './EditGuestModal';
 import { en } from '@supabase/auth-ui-shared';
 import { useGuestCommunication } from '../hooks/useGuestCommunication';
 import { useGuestsByGroup } from '../hooks/useGuestsByGroup';
+import { useEditDrawerState } from '../../edit-drawer/useEditDrawerState';
+import { GuestPanel } from './GuestPanel';
 
 export type GuestColumns = {
     full_name_link: GuestColumnDefinition;
@@ -25,6 +27,7 @@ export type GuestColumns = {
     phone_number: GuestColumnDefinition;
     address: GuestColumnDefinition;
     delete: GuestColumnDefinition;
+    manage_group: GuestColumnDefinition;
 };
 export type GuestColumnDefinition = {
     th: string;
@@ -42,15 +45,33 @@ export const useGuestColumns = (): GuestColumns => {
     const { createEnvelopeWithGuests, envelopes, envelopeAssignments } =
         useGuestCommunication();
 
+    const drawer = useEditDrawerState();
+
     return {
         full_name_link: {
             th: 'Guest Name',
             td: (guest: IGuest) => (
-                <EditGuestModal title='Edit Guest' guest={guest}>
-                    <span className='pl-2 font-medium hover:underline opacity-90 hover:opacity-100'>
-                        {guest.first_name + ' ' + guest.last_name}
-                    </span>
-                </EditGuestModal>
+                <>
+                    <button
+                        onClick={(_) => {
+                            drawer.push({
+                                title:
+                                    'Guest: ' +
+                                    guest.first_name +
+                                    ' ' +
+                                    guest.last_name,
+                                content: <GuestPanel guest={guest} />,
+                            });
+                        }}
+                    >
+                        <span className='pl-2 font-medium hover:underline opacity-90 hover:opacity-100'>
+                            {guest.first_name + ' ' + guest.last_name}
+                        </span>
+                    </button>
+                    <EditGuestModal title='Edit Guest' guest={guest}>
+                        <EditIcon className='w-4 h-4 ml-2' />
+                    </EditGuestModal>
+                </>
             ),
         },
 
@@ -243,5 +264,36 @@ export const useGuestColumns = (): GuestColumns => {
                 </button>
             ),
         },
+        manage_group: {
+            th: '',
+            td: (guest: IGuest) => {
+                const guestGroup = guestsByGroup[guest.group_id || guest.id];
+                return (
+                    <div>
+                        {guestGroup.map((g) => (
+                            <div key={g.id}>{g.first_name}</div>
+                        ))}
+                    </div>
+                );
+            },
+        },
     };
 };
+
+const EditIcon = ({ className }: { className?: string }) => (
+    <svg
+        className={className}
+        fill='none'
+        height='24'
+        stroke='currentColor'
+        stroke-linecap='round'
+        stroke-linejoin='round'
+        stroke-width='2'
+        viewBox='0 0 24 24'
+        width='24'
+        xmlns='http://www.w3.org/2000/svg'
+    >
+        <path d='M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7' />
+        <path d='M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z' />
+    </svg>
+);
